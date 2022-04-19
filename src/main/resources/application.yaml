@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/coin
+    password: coinpw
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+  profiles:
+    include:
+      - secret
+
+logging:
+  level:
+    root:
+      info
+  file:
+    name: log/trading-system.log
