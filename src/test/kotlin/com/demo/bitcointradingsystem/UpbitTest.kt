@@ -81,7 +81,7 @@ class UpbitTest {
         val market = "KRW-BTC"
 
         // when
-        val minuteCandleArray = webClient.get().run {
+        val dayCandleArray = webClient.get().run {
             uri {
                 it.run {
                     path("/candles/days")
@@ -96,6 +96,6 @@ class UpbitTest {
         }.bodyToMono(Array<DayCandle>::class.java).block()
 
         // then
-        assertEquals(minuteCandleArray!!.size, count)
+        assertEquals(dayCandleArray!!.size, count)
     }
 }
