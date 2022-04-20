@@ -38,3 +38,6 @@ out/
 
 ### Log ###
 *.log
+
+### Secret Key ###
+application-secret.yaml
