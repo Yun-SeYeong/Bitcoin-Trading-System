@@ -38,10 +38,6 @@ class UpbitTest {
             retrieve()
         }.bodyToMono(Array<MarketCode>::class.java).block()
 
-        marketCodeArray!!.forEach {
-            println("it = ${it}")
-        }
-
         // then
         Assertions.assertThat(marketCodeArray!!.size).isGreaterThan(0)
     }
