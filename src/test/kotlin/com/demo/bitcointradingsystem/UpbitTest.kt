@@ -1,5 +1,6 @@
 package com.demo.bitcointradingsystem
 
+import com.demo.bitcointradingsystem.dto.DayCandle
 import com.demo.bitcointradingsystem.dto.MinuteCandle
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -37,6 +38,32 @@ class UpbitTest {
             header("Accept", "application/json")
             retrieve()
         }.bodyToMono(Array<MinuteCandle>::class.java).block()
+
+        // then
+        assertEquals(minuteCandleArray!!.size, count)
+    }
+
+    @Test
+    @DisplayName("Upbit API를 통해 일봉 데이터 조회")
+    fun getCandlesDays() {
+        // given
+        val count = 10
+        val market = "KRW-BTC"
+
+        // when
+        val minuteCandleArray = webClient.get().run {
+            uri {
+                it.run {
+                    path("/candles/days")
+                    queryParam("market", market)
+                    queryParam("count", count)
+                    build()
+                }
+            }
+            accept(MediaType.APPLICATION_JSON)
+            header("Accept", "application/json")
+            retrieve()
+        }.bodyToMono(Array<DayCandle>::class.java).block()
 
         // then
         assertEquals(minuteCandleArray!!.size, count)
