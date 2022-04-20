@@ -1,22 +1,18 @@
 package com.demo.bitcointradingsystem
 
-import com.demo.bitcointradingsystem.dto.DayCandle
-import com.demo.bitcointradingsystem.dto.MarketCode
-import com.demo.bitcointradingsystem.dto.MinuteCandle
+import com.demo.bitcointradingsystem.upbit.UpbitService
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.MediaType
-import org.springframework.web.reactive.function.client.WebClient
 
 @SpringBootTest
 class UpbitTest {
 
     @Autowired
-    private lateinit var webClient: WebClient
+    private lateinit var upbitService: UpbitService
 
     @Test
     @DisplayName("Upbit API를 통해 마켓코드 조회")
@@ -25,18 +21,7 @@ class UpbitTest {
         val isDetails = false
 
         // when
-        val marketCodeArray = webClient.get().run {
-            uri {
-                it.run {
-                    path("/market/all")
-                    queryParam("isDetails", isDetails)
-                    build()
-                }
-            }
-            accept(MediaType.APPLICATION_JSON)
-            header("Accept", "application/json")
-            retrieve()
-        }.bodyToMono(Array<MarketCode>::class.java).block()
+        val marketCodeArray = upbitService.getMarketAll(isDetails)
 
         // then
         Assertions.assertThat(marketCodeArray!!.size).isGreaterThan(0)
@@ -51,19 +36,7 @@ class UpbitTest {
         val market = "KRW-BTC"
 
         // when
-        val minuteCandleArray = webClient.get().run {
-            uri {
-                it.run {
-                    path("/candles/minutes/$unit")
-                    queryParam("market", market)
-                    queryParam("count", count)
-                    build()
-                }
-            }
-            accept(MediaType.APPLICATION_JSON)
-            header("Accept", "application/json")
-            retrieve()
-        }.bodyToMono(Array<MinuteCandle>::class.java).block()
+        val minuteCandleArray = upbitService.getCandlesMinutes(unit, market, count)
 
         // then
         assertEquals(minuteCandleArray!!.size, count)
@@ -77,19 +50,7 @@ class UpbitTest {
         val market = "KRW-BTC"
 
         // when
-        val dayCandleArray = webClient.get().run {
-            uri {
-                it.run {
-                    path("/candles/days")
-                    queryParam("market", market)
-                    queryParam("count", count)
-                    build()
-                }
-            }
-            accept(MediaType.APPLICATION_JSON)
-            header("Accept", "application/json")
-            retrieve()
-        }.bodyToMono(Array<DayCandle>::class.java).block()
+        val dayCandleArray = upbitService.getCandlesDays(market, count)
 
         // then
         assertEquals(dayCandleArray!!.size, count)
