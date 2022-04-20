@@ -1,7 +1,9 @@
 package com.demo.bitcointradingsystem
 
 import com.demo.bitcointradingsystem.dto.DayCandle
+import com.demo.bitcointradingsystem.dto.MarketCode
 import com.demo.bitcointradingsystem.dto.MinuteCandle
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -15,6 +17,34 @@ class UpbitTest {
 
     @Autowired
     private lateinit var webClient: WebClient
+
+    @Test
+    @DisplayName("Upbit API를 통해 마켓코드 조회")
+    fun getMarketAll() {
+        // given
+        val isDetails = false
+
+        // when
+        val marketCodeArray = webClient.get().run {
+            uri {
+                it.run {
+                    path("/market/all")
+                    queryParam("isDetails", isDetails)
+                    build()
+                }
+            }
+            accept(MediaType.APPLICATION_JSON)
+            header("Accept", "application/json")
+            retrieve()
+        }.bodyToMono(Array<MarketCode>::class.java).block()
+
+        marketCodeArray!!.forEach {
+            println("it = ${it}")
+        }
+
+        // then
+        Assertions.assertThat(marketCodeArray!!.size).isGreaterThan(0)
+    }
 
     @Test
     @DisplayName("Upbit API를 통해 분봉 데이터 조회")
