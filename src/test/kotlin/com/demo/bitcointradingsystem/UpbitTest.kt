@@ -77,4 +77,22 @@ class UpbitTest {
         // then
         assertNotNull(balanceArray)
     }
+
+    @Test
+    @DisplayName("Upbit API를 통해 주문생성")
+    fun postOrders() {
+        // given
+        val authorization = UpbitUtil.generateToken(accessKey, secretKey)
+        val market = "KRW-BTC"
+        val side = "bid"
+        val volume = ""
+        val price = "10000"
+        val ordType = "price"
+
+        // when
+        val order = upbitService.postOrders(authorization, market, side, volume, price, ordType)
+
+        // then
+        assertNotNull(order)
+    }
 }

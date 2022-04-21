@@ -1,19 +1,26 @@
 package com.demo.bitcointradingsystem.upbit
 
-import com.demo.bitcointradingsystem.dto.Balance
-import com.demo.bitcointradingsystem.dto.DayCandle
-import com.demo.bitcointradingsystem.dto.MarketCode
-import com.demo.bitcointradingsystem.dto.MinuteCandle
+import com.demo.bitcointradingsystem.dto.*
+import com.demo.bitcointradingsystem.util.UpbitUtil
 import lombok.RequiredArgsConstructor
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
+import java.util.*
 
 @Service
 @RequiredArgsConstructor
 class UpbitServiceImpl(
         private val webClient: WebClient
 ) : UpbitService {
+
+    @Value("\${upbit.access-key}")
+    private lateinit var accessKey: String
+
+    @Value("\${upbit.secret-key}")
+    private lateinit var secretKey: String
 
     override fun getMarketAll(isDetails: Boolean): List<MarketCode>? {
         return webClient.get().run {
@@ -75,5 +82,30 @@ class UpbitServiceImpl(
             header("Accept", "application/json")
             retrieve()
         }.bodyToMono(Array<Balance>::class.java).block()?.toList()
+    }
+
+    override fun postOrders(authorization: String, market: String, side: String, volume: String, price: String, ordType: String): Order? {
+        val body = HashMap<String, String>()
+        body.run {
+            put("market", market)
+            put("side", side)
+            put("volume", volume)
+            put("price", price)
+            put("ord_type", ordType)
+        }
+
+        return webClient.post().run {
+            uri {
+                it.run {
+                    path("/orders")
+                    build()
+                }
+            }
+            body(BodyInserters.fromValue(body))
+            accept(MediaType.APPLICATION_JSON)
+            contentType(MediaType.APPLICATION_JSON)
+            header("Authorization", UpbitUtil.getAuthenticationTokenWithParam(accessKey, secretKey, body))
+            retrieve()
+        }.bodyToMono(Order::class.java).block()
     }
 }
