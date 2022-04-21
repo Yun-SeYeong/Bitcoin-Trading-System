@@ -1,11 +1,14 @@
 package com.demo.bitcointradingsystem
 
 import com.demo.bitcointradingsystem.upbit.UpbitService
+import com.demo.bitcointradingsystem.util.UpbitUtil
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
@@ -13,6 +16,12 @@ class UpbitTest {
 
     @Autowired
     private lateinit var upbitService: UpbitService
+
+    @Value("\${upbit.access-key}")
+    private lateinit var accessKey: String
+
+    @Value("\${upbit.secret-key}")
+    private lateinit var secretKey: String
 
     @Test
     @DisplayName("Upbit API를 통해 마켓코드 조회")
@@ -54,5 +63,18 @@ class UpbitTest {
 
         // then
         assertEquals(dayCandleArray!!.size, count)
+    }
+
+    @Test
+    @DisplayName("Upbit API를 통해 자산정보 조회")
+    fun getAccounts() {
+        // given
+        val authorization = UpbitUtil.generateToken(accessKey, secretKey)
+
+        // when
+        val balanceArray = upbitService.getAccounts(authorization)
+
+        // then
+        assertNotNull(balanceArray)
     }
 }

@@ -32,8 +32,8 @@ dependencies {
     //WebFlux
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
-    //HttpClient
-    implementation("org.apache.httpcomponents:httpclient")
+    //Auth0
+    implementation("com.auth0:java-jwt:3.18.3")
 
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("mysql:mysql-connector-java")

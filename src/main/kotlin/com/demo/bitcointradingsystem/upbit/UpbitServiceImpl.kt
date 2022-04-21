@@ -1,5 +1,6 @@
 package com.demo.bitcointradingsystem.upbit
 
+import com.demo.bitcointradingsystem.dto.Balance
 import com.demo.bitcointradingsystem.dto.DayCandle
 import com.demo.bitcointradingsystem.dto.MarketCode
 import com.demo.bitcointradingsystem.dto.MinuteCandle
@@ -59,5 +60,20 @@ class UpbitServiceImpl(
             header("Accept", "application/json")
             retrieve()
         }.bodyToMono(Array<DayCandle>::class.java).block()?.toList()
+    }
+
+    override fun getAccounts(authorization: String): List<Balance>? {
+        return webClient.get().run {
+            uri {
+                it.run {
+                    path("/accounts")
+                    build()
+                }
+            }
+            accept(MediaType.APPLICATION_JSON)
+            header("Authorization", authorization)
+            header("Accept", "application/json")
+            retrieve()
+        }.bodyToMono(Array<Balance>::class.java).block()?.toList()
     }
 }
