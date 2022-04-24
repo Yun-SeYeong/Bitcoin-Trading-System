@@ -37,6 +37,7 @@ out/
 .vscode/
 
 ### Log ###
+log/
 *.log
 
 ### Secret Key ###
