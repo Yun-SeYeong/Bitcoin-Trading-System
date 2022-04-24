@@ -1,9 +1,11 @@
 package com.demo.bitcointradingsystem.dto
 
+import java.time.LocalDateTime
+
 data class DayCandle(
         val market: String,
-        val candleDateTimeUtc: String,
-        val candleDateTimeKst: String,
+        val candleDateTimeUtc: LocalDateTime,
+        val candleDateTimeKst: LocalDateTime,
         val openingPrice: Double,
         val highPrice: Double,
         val lowPrice: Double,
