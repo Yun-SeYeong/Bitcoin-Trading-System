@@ -26,4 +26,18 @@ class SyncTest {
         //then
         assertNotNull(syncMinuteCandle)
     }
+
+    @Test
+    @DisplayName(value = "Sync Day Candle Test")
+    fun SyncDayCandleTest() {
+        //given
+        val count = 10
+        val market = "KRW-BTC"
+
+        //when
+        val syncDayCandle = syncService.syncDayCandle(market, count)
+
+        //then
+        assertNotNull(syncDayCandle)
+    }
 }
