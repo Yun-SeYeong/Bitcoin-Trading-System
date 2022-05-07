@@ -40,4 +40,17 @@ class SyncTest {
         //then
         assertNotNull(syncDayCandle)
     }
+
+    @Test
+    @DisplayName(value = "Sync Market Code Test")
+    fun SyncMarketCodeTest() {
+        //given
+        val isDetails = true
+
+        //when
+        val syncMarketCode = syncService.syncMarketCode(isDetails)
+
+        //then
+        assertNotNull(syncMarketCode)
+    }
 }
