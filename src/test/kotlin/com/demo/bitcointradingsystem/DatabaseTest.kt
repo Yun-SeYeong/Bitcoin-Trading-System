@@ -1,8 +1,10 @@
 package com.demo.bitcointradingsystem
 
 import com.demo.bitcointradingsystem.dto.DayCandle
+import com.demo.bitcointradingsystem.dto.MarketCode
 import com.demo.bitcointradingsystem.dto.MinuteCandle
 import com.demo.bitcointradingsystem.repository.DayCandleRepository
+import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -19,6 +21,9 @@ class DatabaseTest {
 
     @Autowired
     private lateinit var dayCandleRepository: DayCandleRepository
+
+    @Autowired
+    private lateinit var marketCodeRepository: MarketCodeRepository
 
     @Test
     @DisplayName("MinuteCandle 저장")
@@ -76,6 +81,23 @@ class DatabaseTest {
 
         // when
         val savedDayCandle = dayCandleRepository.save(dayCandle)
+
+        // then
+        assertThat(savedDayCandle)
+    }
+
+    @Test
+    @DisplayName("MarketCode 저장")
+    fun saveMarketCode() {
+        // given
+
+        /*
+            MarketCode(market=KRW-BTC, koreanName=비트코인, englishName=Bitcoin, marketWarning=null)
+         */
+        val marketCode = MarketCode(market="KRW-BTC", koreanName="비트코인", englishName="Bitcoin", marketWarning=null)
+
+        // when
+        val savedDayCandle = marketCodeRepository.save(marketCode)
 
         // then
         assertThat(savedDayCandle)
