@@ -1,11 +1,13 @@
 package com.demo.bitcointradingsystem
 
 import com.demo.bitcointradingsystem.sync.SyncService
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDateTime
 
 @SpringBootTest
 class SyncTest {
@@ -39,6 +41,24 @@ class SyncTest {
 
         //then
         assertNotNull(syncDayCandle)
+    }
+
+    @Test
+    @DisplayName(value = "Sync Day Candle Test")
+    fun SyncLastDayCandleTest() {
+        //given
+        val market = "KRW-BTC"
+
+        //when
+        val syncDayCandle = syncService.syncLastDayCandle(market)
+
+        println("syncDayCandle.candleDateTimeKst = ${syncDayCandle!!.candleDateTimeKst}")
+
+        //then
+        assertNotNull(syncDayCandle)
+        assertEquals(syncDayCandle.candleDateTimeKst.year, LocalDateTime.now().year)
+        assertEquals(syncDayCandle.candleDateTimeKst.month, LocalDateTime.now().month)
+        assertEquals(syncDayCandle.candleDateTimeKst.dayOfMonth, LocalDateTime.now().dayOfMonth - 1)
     }
 
     @Test

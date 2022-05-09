@@ -35,6 +35,14 @@ class SyncServiceImpl(
         return null
     }
 
+    override fun syncLastDayCandle(market: String): DayCandle? {
+        val candlesDays = upbitService.getCandlesDays(market, 2)
+        if (candlesDays != null) {
+            return dayCandleRepository.save(candlesDays[1])
+        }
+        return null
+    }
+
     override fun syncMarketCode(isDetails: Boolean): List<MarketCode>? {
         val candlesDays = upbitService.getMarketAll(isDetails)
         if (candlesDays != null) {
