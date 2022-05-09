@@ -16,7 +16,7 @@ class CollectScheduler(
         val marketCodeList = marketCodeRepository.findAll()
 
         marketCodeList.forEach {
-            syncService.syncDayCandle(it.market, 1)
+            syncService.syncLastDayCandle(it.market)
         }
     }
 }
