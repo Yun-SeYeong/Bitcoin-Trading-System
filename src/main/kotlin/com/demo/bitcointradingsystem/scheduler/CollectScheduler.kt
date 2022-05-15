@@ -14,6 +14,11 @@ class CollectScheduler(
 ) {
 
     @Scheduled(cron = "0 0 0 * * *")
+    fun collectMarketCode() {
+        syncService.syncMarketCode(true)
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
     fun collectDayCandle() {
         val marketCodeList = marketCodeRepository.findAll()
 
