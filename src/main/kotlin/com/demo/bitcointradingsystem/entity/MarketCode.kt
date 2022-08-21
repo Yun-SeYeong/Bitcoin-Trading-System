@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.dto
+package com.demo.bitcointradingsystem.entity
 
 import javax.persistence.Entity
 import javax.persistence.Id

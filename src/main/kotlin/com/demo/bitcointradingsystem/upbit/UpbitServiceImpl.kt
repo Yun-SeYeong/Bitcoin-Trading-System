@@ -1,6 +1,7 @@
 package com.demo.bitcointradingsystem.upbit
 
 import com.demo.bitcointradingsystem.dto.*
+import com.demo.bitcointradingsystem.entity.*
 import com.demo.bitcointradingsystem.util.UpbitUtil
 import lombok.RequiredArgsConstructor
 import org.springframework.beans.factory.annotation.Value

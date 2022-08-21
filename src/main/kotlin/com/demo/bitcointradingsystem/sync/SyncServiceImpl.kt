@@ -1,8 +1,8 @@
 package com.demo.bitcointradingsystem.sync
 
-import com.demo.bitcointradingsystem.dto.DayCandle
-import com.demo.bitcointradingsystem.dto.MarketCode
-import com.demo.bitcointradingsystem.dto.MinuteCandle
+import com.demo.bitcointradingsystem.entity.DayCandle
+import com.demo.bitcointradingsystem.entity.MarketCode
+import com.demo.bitcointradingsystem.entity.MinuteCandle
 import com.demo.bitcointradingsystem.repository.DayCandleRepository
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
@@ -19,35 +19,28 @@ class SyncServiceImpl(
         private val marketCodeRepository: MarketCodeRepository
 ) : SyncService {
 
-    override fun syncMinuteCandle(unit: Int, market: String, count: Int): List<MinuteCandle>? {
+    override fun syncMinuteCandle(unit: Int, market: String, count: Int): List<MinuteCandle> {
         val minuteCandleArray = upbitService.getCandlesMinutes(unit, market, count)
-        if (minuteCandleArray != null) {
-            return minuteCandleRepository.saveAll(minuteCandleArray)
-        }
-        return null
+                ?: throw Exception("Fail to load upbit data")
+
+        return minuteCandleRepository.saveAll(minuteCandleArray)
     }
 
-    override fun syncDayCandle(market: String, count: Int): List<DayCandle>? {
-        val candlesDays = upbitService.getCandlesDays(market, count)
-        if (candlesDays != null) {
-            return dayCandleRepository.saveAll(candlesDays)
-        }
-        return null
+    override fun syncDayCandle(market: String, count: Int): List<DayCandle> {
+        val candlesDays = upbitService.getCandlesDays(market, count) ?: throw Exception("Fail to load upbit data")
+
+        return dayCandleRepository.saveAll(candlesDays)
     }
 
-    override fun syncLastDayCandle(market: String): DayCandle? {
-        val candlesDays = upbitService.getCandlesDays(market, 2)
-        if (candlesDays != null) {
-            return dayCandleRepository.save(candlesDays[1])
-        }
-        return null
+    override fun syncLastDayCandle(market: String): DayCandle {
+        val candlesDays = upbitService.getCandlesDays(market, 2) ?: throw Exception("Fail to load upbit data")
+
+        return dayCandleRepository.save(candlesDays[1])
     }
 
-    override fun syncMarketCode(isDetails: Boolean): List<MarketCode>? {
-        val candlesDays = upbitService.getMarketAll(isDetails)
-        if (candlesDays != null) {
-            return marketCodeRepository.saveAll(candlesDays)
-        }
-        return null
+    override fun syncMarketCode(isDetails: Boolean): List<MarketCode> {
+        val candlesDays = upbitService.getMarketAll(isDetails) ?: throw Exception("Fail to load upbit data")
+
+        return marketCodeRepository.saveAll(candlesDays)
     }
 }

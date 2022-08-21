@@ -1,8 +1,6 @@
 package com.demo.bitcointradingsystem
 
-import com.demo.bitcointradingsystem.dto.DayCandle
-import com.demo.bitcointradingsystem.dto.MarketCode
-import com.demo.bitcointradingsystem.dto.MinuteCandle
+import com.demo.bitcointradingsystem.entity.*
 import com.demo.bitcointradingsystem.repository.DayCandleRepository
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
@@ -11,9 +9,11 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @SpringBootTest
+@Transactional
 class DatabaseTest {
 
     @Autowired
@@ -30,8 +30,8 @@ class DatabaseTest {
     fun saveMinuteCandle() {
         // given
 
-        /*
-            MinuteCandle(market=KRW-BTC, candleDateTimeUtc=2022-04-30T06:15, candleDateTimeKst=2022-04-30T15:15, openingPrice=4.9763E7, highPrice=4.9774E7, lowPrice=4.9738E7, tradePrice=4.977E7, timestamp=1651299347948, candleAccTradePrice=1.5796587238106E8, candleAccTradeVolume=3.1743735, unit=1)
+        /**
+         * MinuteCandle(market=KRW-BTC, candleDateTimeUtc=2022-04-30T06:15, candleDateTimeKst=2022-04-30T15:15, openingPrice=4.9763E7, highPrice=4.9774E7, lowPrice=4.9738E7, tradePrice=4.977E7, timestamp=1651299347948, candleAccTradePrice=1.5796587238106E8, candleAccTradeVolume=3.1743735, unit=1)
          */
         val minuteCandle = MinuteCandle(
                 market="KRW-BTC",
@@ -49,9 +49,10 @@ class DatabaseTest {
 
         // when
         val savedMinuteCandle = minuteCandleRepository.save(minuteCandle)
+        val findMinuteCandle = minuteCandleRepository.findById(MinuteCandleKey(minuteCandle.market, minuteCandle.timestamp)).get()
 
         // then
-        assertThat(savedMinuteCandle)
+        assertThat(findMinuteCandle).isEqualTo(savedMinuteCandle)
     }
 
     @Test
@@ -59,8 +60,8 @@ class DatabaseTest {
     fun saveDayCandle() {
         // given
 
-        /*
-            DayCandle(market=KRW-BTC, candleDateTimeUtc=2022-04-22T00:00, candleDateTimeKst=2022-04-22T09:00, openingPrice=5.0805E7, highPrice=5.1E7, lowPrice=4.9526E7, tradePrice=4.9937E7, timestamp=1650671999479, candleAccTradePrice=1.6651841733012607E11, candleAccTradeVolume=3309.37626968, prevClosingPrice=5.0805E7, changePrice=-868000.0, changeRate=-0.0170849326, convertedTradePrice=0.0)
+        /**
+         *  DayCandle(market=KRW-BTC, candleDateTimeUtc=2022-04-22T00:00, candleDateTimeKst=2022-04-22T09:00, openingPrice=5.0805E7, highPrice=5.1E7, lowPrice=4.9526E7, tradePrice=4.9937E7, timestamp=1650671999479, candleAccTradePrice=1.6651841733012607E11, candleAccTradeVolume=3309.37626968, prevClosingPrice=5.0805E7, changePrice=-868000.0, changeRate=-0.0170849326, convertedTradePrice=0.0)
          */
         val dayCandle = DayCandle(
                 market="KRW-BTC",
@@ -81,9 +82,10 @@ class DatabaseTest {
 
         // when
         val savedDayCandle = dayCandleRepository.save(dayCandle)
+        val findDayCandle = dayCandleRepository.findById(DayCandleKey(savedDayCandle.market, savedDayCandle.timestamp)).get()
 
         // then
-        assertThat(savedDayCandle)
+        assertThat(savedDayCandle).isEqualTo(findDayCandle)
     }
 
     @Test
@@ -91,16 +93,17 @@ class DatabaseTest {
     fun saveMarketCode() {
         // given
 
-        /*
-            MarketCode(market=KRW-BTC, koreanName=비트코인, englishName=Bitcoin, marketWarning=null)
+        /**
+         *  MarketCode(market=KRW-BTC, koreanName=비트코인, englishName=Bitcoin, marketWarning=null)
          */
         val marketCode = MarketCode(market="KRW-BTC", koreanName="비트코인", englishName="Bitcoin", marketWarning=null)
 
         // when
-        val savedDayCandle = marketCodeRepository.save(marketCode)
+        val savedMarketCode = marketCodeRepository.save(marketCode)
+        val findMarketCode = marketCodeRepository.findById(marketCode.market).get()
 
         // then
-        assertThat(savedDayCandle)
+        assertThat(savedMarketCode).isEqualTo(findMarketCode)
     }
 
 }

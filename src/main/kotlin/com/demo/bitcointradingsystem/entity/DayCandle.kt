@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.dto
+package com.demo.bitcointradingsystem.entity
 
 import java.time.LocalDateTime
 import javax.persistence.Entity

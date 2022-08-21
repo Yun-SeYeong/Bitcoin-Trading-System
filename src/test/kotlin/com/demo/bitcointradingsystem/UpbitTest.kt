@@ -2,9 +2,7 @@ package com.demo.bitcointradingsystem
 
 import com.demo.bitcointradingsystem.upbit.UpbitService
 import com.demo.bitcointradingsystem.util.UpbitUtil
-import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,7 +31,7 @@ class UpbitTest {
         val marketCodeArray = upbitService.getMarketAll(isDetails)
 
         // then
-        Assertions.assertThat(marketCodeArray!!.size).isGreaterThan(0)
+        assertThat(marketCodeArray!!.size).isGreaterThan(0)
     }
 
     @Test
@@ -48,7 +46,7 @@ class UpbitTest {
         val minuteCandleArray = upbitService.getCandlesMinutes(unit, market, count)
 
         // then
-        assertEquals(minuteCandleArray!!.size, count)
+        assertThat(minuteCandleArray!!.size).isEqualTo(count)
     }
 
     @Test
@@ -62,7 +60,7 @@ class UpbitTest {
         val dayCandleArray = upbitService.getCandlesDays(market, count)
 
         // then
-        assertEquals(dayCandleArray!!.size, count)
+        assertThat(dayCandleArray!!.size).isEqualTo(count)
     }
 
     @Test
@@ -75,24 +73,7 @@ class UpbitTest {
         val balanceArray = upbitService.getAccounts(authorization)
 
         // then
-        assertNotNull(balanceArray)
+        assertThat(balanceArray).isNotNull
     }
 
-    @Test
-    @DisplayName("Upbit API를 통해 주문생성")
-    fun postOrders() {
-        // given
-        val authorization = UpbitUtil.generateToken(accessKey, secretKey)
-        val market = "KRW-BTC"
-        val side = "bid"
-        val volume = ""
-        val price = "10000"
-        val ordType = "price"
-
-        // when
-        val order = upbitService.postOrders(authorization, market, side, volume, price, ordType)
-
-        // then
-        assertNotNull(order)
-    }
 }
