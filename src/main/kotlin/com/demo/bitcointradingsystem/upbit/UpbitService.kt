@@ -1,6 +1,10 @@
 package com.demo.bitcointradingsystem.upbit
 
-import com.demo.bitcointradingsystem.entity.*
+import com.demo.bitcointradingsystem.dto.Order
+import com.demo.bitcointradingsystem.entity.Balance
+import com.demo.bitcointradingsystem.entity.DayCandle
+import com.demo.bitcointradingsystem.entity.MarketCode
+import com.demo.bitcointradingsystem.entity.MinuteCandle
 
 interface UpbitService {
     fun getMarketAll(isDetails: Boolean): List<MarketCode>?
