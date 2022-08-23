@@ -87,6 +87,7 @@ class DatabaseTest {
 
         // then
         assertThat(savedDayCandle).isEqualTo(findDayCandle)
+        assertThat(savedDayCandle.hashCode()).isEqualTo(findDayCandle.hashCode())
     }
 
     @Test
