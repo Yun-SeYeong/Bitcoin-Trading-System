@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.entity
+package com.demo.bitcointradingsystem.dto
 
 data class Balance(
         val currency: String,
