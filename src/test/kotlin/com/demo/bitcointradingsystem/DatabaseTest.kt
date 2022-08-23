@@ -106,6 +106,7 @@ class DatabaseTest {
 
         // then
         assertThat(savedMarketCode).isEqualTo(findMarketCode)
+        assertThat(savedMarketCode.hashCode()).isEqualTo(findMarketCode.hashCode())
     }
 
 }
