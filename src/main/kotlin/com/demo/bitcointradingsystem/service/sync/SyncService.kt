@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.sync
+package com.demo.bitcointradingsystem.service.sync
 
 import com.demo.bitcointradingsystem.entity.DayCandle
 import com.demo.bitcointradingsystem.entity.MarketCode
