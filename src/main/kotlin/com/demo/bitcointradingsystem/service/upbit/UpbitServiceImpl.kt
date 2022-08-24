@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.upbit
+package com.demo.bitcointradingsystem.service.upbit
 
 import com.demo.bitcointradingsystem.dto.*
 import com.demo.bitcointradingsystem.entity.*

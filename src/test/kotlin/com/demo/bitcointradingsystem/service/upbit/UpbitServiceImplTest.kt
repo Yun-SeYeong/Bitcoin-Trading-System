@@ -1,6 +1,5 @@
-package com.demo.bitcointradingsystem
+package com.demo.bitcointradingsystem.service.upbit
 
-import com.demo.bitcointradingsystem.upbit.UpbitService
 import com.demo.bitcointradingsystem.util.UpbitUtil
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -8,9 +7,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
-class UpbitTest {
+@Transactional
+internal class UpbitServiceImplTest {
 
     @Autowired
     private lateinit var upbitService: UpbitService

@@ -1,7 +1,7 @@
 package com.demo.bitcointradingsystem.scheduler
 
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
-import com.demo.bitcointradingsystem.sync.SyncService
+import com.demo.bitcointradingsystem.service.sync.SyncService
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component

@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.sync
+package com.demo.bitcointradingsystem.service.sync
 
 import com.demo.bitcointradingsystem.entity.DayCandle
 import com.demo.bitcointradingsystem.entity.MarketCode
@@ -6,7 +6,7 @@ import com.demo.bitcointradingsystem.entity.MinuteCandle
 import com.demo.bitcointradingsystem.repository.DayCandleRepository
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
-import com.demo.bitcointradingsystem.upbit.UpbitService
+import com.demo.bitcointradingsystem.service.upbit.UpbitService
 import lombok.RequiredArgsConstructor
 import org.springframework.stereotype.Service
 

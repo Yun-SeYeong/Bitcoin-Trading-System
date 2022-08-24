@@ -1,9 +1,8 @@
-package com.demo.bitcointradingsystem
+package com.demo.bitcointradingsystem.service.sync
 
 import com.demo.bitcointradingsystem.repository.DayCandleRepository
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
-import com.demo.bitcointradingsystem.sync.SyncService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -16,7 +15,7 @@ import java.time.LocalDateTime
 
 @SpringBootTest
 @Transactional
-class SyncTest {
+internal class SyncServiceImplTest {
     @Autowired
     private lateinit var syncService: SyncService
 

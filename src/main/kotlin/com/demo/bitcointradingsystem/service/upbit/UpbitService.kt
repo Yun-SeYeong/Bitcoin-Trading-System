@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.upbit
+package com.demo.bitcointradingsystem.service.upbit
 
 import com.demo.bitcointradingsystem.dto.Balance
 import com.demo.bitcointradingsystem.dto.Order
