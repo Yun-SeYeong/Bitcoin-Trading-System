@@ -20,7 +20,14 @@ class SyncServiceImpl(
 ) : SyncService {
 
     override fun syncMinuteCandle(unit: Int, market: String, count: Int): List<MinuteCandle> {
-        val minuteCandleArray = upbitService.getCandlesMinutes(unit, market, count)
+        val minuteCandleArray = upbitService.getCandlesMinutes(unit, market, count, "")
+                ?: throw Exception("Fail to load upbit data")
+
+        return minuteCandleRepository.saveAll(minuteCandleArray)
+    }
+
+    override fun syncMinuteCandleWithDate(unit: Int, market: String, count: Int, to: String): List<MinuteCandle> {
+        val minuteCandleArray = upbitService.getCandlesMinutes(unit, market, count, to)
                 ?: throw Exception("Fail to load upbit data")
 
         return minuteCandleRepository.saveAll(minuteCandleArray)
