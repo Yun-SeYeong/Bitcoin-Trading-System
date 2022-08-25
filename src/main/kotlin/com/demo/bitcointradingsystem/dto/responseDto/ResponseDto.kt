@@ -1,4 +1,4 @@
 package com.demo.bitcointradingsystem.dto.responseDto
 
-class GetResponseDto<T>(val data:T) {
+class ResponseDto<T>(val data:T) {
 }
