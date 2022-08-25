@@ -38,13 +38,14 @@ class UpbitServiceImpl(
         }.bodyToMono(Array<MarketCode>::class.java).block()?.toList()
     }
 
-    override fun getCandlesMinutes(unit: Int, market: String, count: Int): List<MinuteCandle>? {
+    override fun getCandlesMinutes(unit: Int, market: String, count: Int, to: String): List<MinuteCandle>? {
         return webClient.get().run {
             uri {
                 it.run {
                     path("/candles/minutes/$unit")
                     queryParam("market", market)
                     queryParam("count", count)
+                    if (to.isNotEmpty()) queryParam("to", to)
                     build()
                 }
             }

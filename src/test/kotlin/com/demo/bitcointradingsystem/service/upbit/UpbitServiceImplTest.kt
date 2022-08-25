@@ -44,7 +44,7 @@ internal class UpbitServiceImplTest {
         val market = "KRW-BTC"
 
         // when
-        val minuteCandleArray = upbitService.getCandlesMinutes(unit, market, count)
+        val minuteCandleArray = upbitService.getCandlesMinutes(unit, market, count, "")
 
         // then
         assertThat(minuteCandleArray!!.size).isEqualTo(count)

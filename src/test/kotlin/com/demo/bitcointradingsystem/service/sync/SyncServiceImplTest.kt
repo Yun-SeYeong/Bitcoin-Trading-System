@@ -45,6 +45,29 @@ internal class SyncServiceImplTest {
     }
 
     @Test
+    @DisplayName(value = "Sync Minute Candle With Specific Date Test")
+    fun syncMinuteCandleWithDateTest() {
+        //given
+        val unit = 1
+        val count = 10
+        val market = "KRW-BTC"
+        val year = 2021
+        val month = 8
+        val day = 25
+        val to = "${year}-${String.format("%02d", month)}-${day}T00:00:00Z"
+
+        //when
+        val syncMinuteCandle = syncService.syncMinuteCandleWithDate(unit, market, count, to)
+        val findMinuteCandle = minuteCandleRepository.findByMarketAndUnit(market, unit)
+
+        //then
+        assertThat(syncMinuteCandle.size).isEqualTo(findMinuteCandle.size)
+        assertThat(syncMinuteCandle[0].candleDateTimeKst.year).isEqualTo(year)
+        assertThat(syncMinuteCandle[0].candleDateTimeKst.month.value).isEqualTo(month)
+        assertThat(syncMinuteCandle[0].candleDateTimeKst.dayOfMonth).isEqualTo(day)
+    }
+
+    @Test
     @DisplayName(value = "Sync Day Candle Test")
     fun syncDayCandleTest() {
         //given
