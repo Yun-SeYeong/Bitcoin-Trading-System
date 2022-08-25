@@ -1,5 +1,6 @@
 package com.demo.bitcointradingsystem.service.candle
 
+import com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto
 import com.demo.bitcointradingsystem.dto.responseDto.GetMinuteCandleV1Dto
 import org.springframework.stereotype.Service
 import javax.persistence.EntityManager
@@ -21,4 +22,15 @@ class CandleServiceImpl(private val em: EntityManager) : CandleService {
                 .resultList
     }
 
+    @Override
+    override fun getDayCandle(market: String, count: Int): List<GetDayCandleV1Dto> {
+        return em.createQuery(
+                "select new com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto(dc.market, dc.candleDateTimeKst, dc.openingPrice, dc.highPrice, dc.lowPrice, dc.tradePrice, dc.candleAccTradeVolume) " +
+                        "from DayCandle dc " +
+                        "where dc.market=:market " +
+                        "order by dc.candleDateTimeKst", GetDayCandleV1Dto::class.java)
+                .setParameter("market", market)
+                .setMaxResults(count)
+                .resultList
+    }
 }
