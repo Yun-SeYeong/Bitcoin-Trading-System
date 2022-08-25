@@ -28,7 +28,7 @@ class CandleServiceImpl(private val em: EntityManager) : CandleService {
                 "select new com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto(dc.market, dc.candleDateTimeKst, dc.openingPrice, dc.highPrice, dc.lowPrice, dc.tradePrice, dc.candleAccTradeVolume) " +
                         "from DayCandle dc " +
                         "where dc.market=:market " +
-                        "order by dc.candleDateTimeKst", GetDayCandleV1Dto::class.java)
+                        "order by dc.candleDateTimeKst desc", GetDayCandleV1Dto::class.java)
                 .setParameter("market", market)
                 .setMaxResults(count)
                 .resultList
