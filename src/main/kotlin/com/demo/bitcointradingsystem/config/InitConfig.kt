@@ -12,5 +12,6 @@ class InitConfig(
     fun init() {
         syncService.syncMarketCode(true)
         syncService.syncMinuteCandle(3, "KRW-BTC", 100)
+        syncService.syncDayCandle("KRW-BTC", 100)
     }
 }

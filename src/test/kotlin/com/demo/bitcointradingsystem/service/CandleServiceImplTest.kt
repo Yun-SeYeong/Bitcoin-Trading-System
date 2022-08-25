@@ -20,6 +20,7 @@ internal class CandleServiceImplTest {
     @PostConstruct
     fun init() {
         syncService.syncMinuteCandle(3, "KRW-BTC", 100)
+        syncService.syncDayCandle("KRW-BTC", 100)
     }
 
     @Test
@@ -34,5 +35,19 @@ internal class CandleServiceImplTest {
 
         // then
         assertThat(minuteCandles.size).isEqualTo(count)
+    }
+
+    @Test
+    fun getDayCandleTest() {
+        // given
+        val count = 10
+        val market = "KRW-BTC"
+
+        // when
+        val dayCandles = candleService.getDayCandle(market, count)
+
+        //then
+        assertThat(dayCandles.size).isEqualTo(count)
+
     }
 }
