@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @SpringBootTest
 @Transactional
@@ -62,9 +63,30 @@ internal class SyncServiceImplTest {
 
         //then
         assertThat(syncMinuteCandle.size).isEqualTo(findMinuteCandle.size)
-        assertThat(syncMinuteCandle[0].candleDateTimeKst.year).isEqualTo(year)
-        assertThat(syncMinuteCandle[0].candleDateTimeKst.month.value).isEqualTo(month)
-        assertThat(syncMinuteCandle[0].candleDateTimeKst.dayOfMonth).isEqualTo(day)
+        assertThat(LocalDateTime.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")).minusMinutes(1))
+                .isEqualTo(syncMinuteCandle[0].candleDateTimeUtc)
+    }
+
+    @Test
+    @DisplayName(value = "Sync Day Candle With Specific Date Test")
+    fun syncDayCandleWithDateTest() {
+        //given
+        val count = 10
+        val market = "KRW-BTC"
+        val year = 2021
+        val month = 8
+        val day = 25
+        val to = "${year}-${String.format("%02d", month)}-${day}T00:00:00Z"
+
+        //when
+        dayCandleRepository.deleteAll()
+        val syncDayCandle = syncService.syncDayCandleWithDate(market, count, to)
+        val findDayCandle = dayCandleRepository.findByMarket(market)
+
+        //then
+        assertThat(syncDayCandle.size).isEqualTo(findDayCandle.size)
+        assertThat(LocalDateTime.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")).minusDays(1))
+                .isEqualTo(syncDayCandle[0].candleDateTimeUtc)
     }
 
     @Test
@@ -75,6 +97,7 @@ internal class SyncServiceImplTest {
         val market = "KRW-BTC"
 
         //when
+        dayCandleRepository.deleteAll()
         val syncDayCandle = syncService.syncDayCandle(market, count)
         val findMinuteCandle = dayCandleRepository.findByMarket(market)
 
