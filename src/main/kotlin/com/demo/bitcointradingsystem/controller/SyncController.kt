@@ -1,5 +1,6 @@
 package com.demo.bitcointradingsystem.controller
 
+import com.demo.bitcointradingsystem.dto.responseDto.PostSyncDayCandleV1Dto
 import com.demo.bitcointradingsystem.dto.responseDto.PostSyncMarketCodeV1Dto
 import com.demo.bitcointradingsystem.dto.responseDto.PostSyncMinuteCandleV1Dto
 import com.demo.bitcointradingsystem.dto.responseDto.ResponseDto
@@ -25,5 +26,14 @@ class SyncController(
             @RequestParam count: Int
     ) : ResponseDto<PostSyncMinuteCandleV1Dto> {
         return ResponseDto(PostSyncMinuteCandleV1Dto(syncService.syncMinuteCandleWithDate(unit, market, count, to).size))
+    }
+
+    @PostMapping("day-candle/v1")
+    fun syncDayCandleV1(
+            @RequestParam market: String,
+            @RequestParam to: String,
+            @RequestParam count: Int
+    ) : ResponseDto<PostSyncDayCandleV1Dto> {
+        return ResponseDto(PostSyncDayCandleV1Dto(syncService.syncDayCandleWithDate(market, count, to).size))
     }
 }

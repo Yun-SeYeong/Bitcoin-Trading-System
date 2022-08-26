@@ -34,13 +34,19 @@ class SyncServiceImpl(
     }
 
     override fun syncDayCandle(market: String, count: Int): List<DayCandle> {
-        val candlesDays = upbitService.getCandlesDays(market, count) ?: throw Exception("Fail to load upbit data")
+        val candlesDays = upbitService.getCandlesDays(market, count, "") ?: throw Exception("Fail to load upbit data")
+
+        return dayCandleRepository.saveAll(candlesDays)
+    }
+
+    override fun syncDayCandleWithDate(market: String, count: Int, to: String): List<DayCandle> {
+        val candlesDays = upbitService.getCandlesDays(market, count, to) ?: throw Exception("Fail to load upbit data")
 
         return dayCandleRepository.saveAll(candlesDays)
     }
 
     override fun syncLastDayCandle(market: String): DayCandle {
-        val candlesDays = upbitService.getCandlesDays(market, 2) ?: throw Exception("Fail to load upbit data")
+        val candlesDays = upbitService.getCandlesDays(market, 2, "") ?: throw Exception("Fail to load upbit data")
 
         return dayCandleRepository.save(candlesDays[1])
     }
