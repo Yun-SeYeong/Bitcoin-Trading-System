@@ -3,7 +3,6 @@ package com.demo.bitcointradingsystem.service.upbit
 import com.demo.bitcointradingsystem.dto.*
 import com.demo.bitcointradingsystem.entity.*
 import com.demo.bitcointradingsystem.util.UpbitUtil
-import lombok.RequiredArgsConstructor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
@@ -12,7 +11,6 @@ import org.springframework.web.reactive.function.client.WebClient
 import java.util.*
 
 @Service
-@RequiredArgsConstructor
 class UpbitServiceImpl(
         private val webClient: WebClient
 ) : UpbitService {

@@ -1,16 +1,17 @@
 package com.demo.bitcointradingsystem.controller
 
-import com.demo.bitcointradingsystem.dto.responseDto.PostSyncDayCandleV1Dto
-import com.demo.bitcointradingsystem.dto.responseDto.PostSyncMarketCodeV1Dto
-import com.demo.bitcointradingsystem.dto.responseDto.PostSyncMinuteCandleV1Dto
-import com.demo.bitcointradingsystem.dto.responseDto.ResponseDto
+import com.demo.bitcointradingsystem.dto.responseDto.*
+import com.demo.bitcointradingsystem.service.joblog.LogService
 import com.demo.bitcointradingsystem.service.sync.SyncService
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/sync")
 class SyncController(
-        private val syncService: SyncService
+        private val syncService: SyncService,
+        private val logService: LogService
 ) {
 
     @PostMapping("/market-code/v1")
@@ -35,5 +36,16 @@ class SyncController(
             @RequestParam count: Int
     ) : ResponseDto<PostSyncDayCandleV1Dto> {
         return ResponseDto(PostSyncDayCandleV1Dto(syncService.syncDayCandleWithDate(market, count, to).size))
+    }
+
+    @GetMapping("log/v1")
+    fun getSyncLogV1(
+            @PageableDefault(sort = ["startDateTime,desc"]) pageable: Pageable
+    ) : ResponseDto<List<GetSyncLogV1Dto>>{
+        return ResponseDto(
+                logService.getLog(pageable).map {
+                    GetSyncLogV1Dto(it.jobId, it.startDateTime, it.endDateTime, it.status.toString(), it.msg)
+                }.content
+        )
     }
 }
