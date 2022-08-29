@@ -1,6 +1,7 @@
 package com.demo.bitcointradingsystem.controller
 
 import com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto
+import com.demo.bitcointradingsystem.dto.responseDto.GetMarketCodeV1Dto
 import com.demo.bitcointradingsystem.dto.responseDto.GetMinuteCandleV1Dto
 import com.demo.bitcointradingsystem.dto.responseDto.ResponseDto
 import com.demo.bitcointradingsystem.service.candle.CandleService
@@ -27,6 +28,11 @@ class CandleController(
             @RequestParam count: Int
     ): ResponseDto<List<GetDayCandleV1Dto>> {
         return ResponseDto(candleService.getDayCandle(market, count))
+    }
+
+    @GetMapping("market-code/v1")
+    fun getMarketCodeV1(): ResponseDto<List<GetMarketCodeV1Dto>> {
+        return ResponseDto(candleService.getMarketCode())
     }
 
 }
