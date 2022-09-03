@@ -51,7 +51,7 @@ class CollectScheduler(
 
             marketCodeList.forEach {
                 println("[" + it.market + "] sync...")
-                syncService.syncMinuteCandle(3, it.market, 2)
+                syncService.batchMinuteCandleWithDate(3, it.market, 2, "")
                 Thread.sleep(200);
                 println("[" + it.market + "] sync complete!")
             }

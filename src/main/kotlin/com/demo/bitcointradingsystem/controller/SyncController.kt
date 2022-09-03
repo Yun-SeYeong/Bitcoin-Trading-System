@@ -26,7 +26,7 @@ class SyncController(
             @RequestParam to: String,
             @RequestParam count: Int
     ) : ResponseDto<PostSyncMinuteCandleV1Dto> {
-        return ResponseDto(PostSyncMinuteCandleV1Dto(syncService.syncMinuteCandleWithDate(unit, market, count, to).size))
+        return ResponseDto(PostSyncMinuteCandleV1Dto(syncService.batchMinuteCandleWithDate(unit, market, count, to)))
     }
 
     @PostMapping("day-candle/v1")
@@ -35,7 +35,7 @@ class SyncController(
             @RequestParam to: String,
             @RequestParam count: Int
     ) : ResponseDto<PostSyncDayCandleV1Dto> {
-        return ResponseDto(PostSyncDayCandleV1Dto(syncService.syncDayCandleWithDate(market, count, to).size))
+        return ResponseDto(PostSyncDayCandleV1Dto(syncService.batchDayCandleWithDate(market, count, to)))
     }
 
     @GetMapping("log/v1")

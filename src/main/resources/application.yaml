@@ -23,5 +23,11 @@ logging:
   level:
     root:
       info
+    org:
+      springframework:
+        jdbc:
+          core: TRACE
+          SQL: debug
   file:
     name: log/trading-system.log
+

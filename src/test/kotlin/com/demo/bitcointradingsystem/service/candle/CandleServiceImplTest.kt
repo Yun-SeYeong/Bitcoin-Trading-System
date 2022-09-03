@@ -1,6 +1,5 @@
-package com.demo.bitcointradingsystem.service
+package com.demo.bitcointradingsystem.service.candle
 
-import com.demo.bitcointradingsystem.service.candle.CandleService
 import com.demo.bitcointradingsystem.service.sync.SyncService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

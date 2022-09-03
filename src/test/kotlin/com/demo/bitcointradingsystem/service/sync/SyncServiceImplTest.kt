@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.annotation.PostConstruct
 
 @SpringBootTest
 @Transactional
@@ -29,12 +30,19 @@ internal class SyncServiceImplTest {
     @Autowired
     private lateinit var marketCodeRepository: MarketCodeRepository
 
+    @PostConstruct
+    fun init() {
+        minuteCandleRepository.deleteAll()
+        dayCandleRepository.deleteAll()
+        marketCodeRepository.deleteAll()
+    }
+
     @Test
     @DisplayName(value = "Sync Minute Candle Test")
     fun syncMinuteCandleTest() {
         //given
         val unit = 1
-        val count = 10
+        val count = 200
         val market = "KRW-BTC"
 
         //when
@@ -43,6 +51,22 @@ internal class SyncServiceImplTest {
 
         //then
         assertThat(syncMinuteCandle.size).isEqualTo(findMinuteCandle.size)
+    }
+
+    @Test
+    @DisplayName(value = "Batch Minute Candle Test")
+    fun batchMinuteCandleTest() {
+        //given
+        val unit = 1
+        val count = 200
+        val market = "KRW-BTC"
+
+        //when
+        val resultSize = syncService.batchMinuteCandleWithDate(unit, market, count, "")
+        val findMinuteCandle = minuteCandleRepository.findByMarketAndUnit(market, unit)
+
+        //then
+        assertThat(resultSize).isEqualTo(findMinuteCandle.size)
     }
 
     @Test
@@ -97,12 +121,26 @@ internal class SyncServiceImplTest {
         val market = "KRW-BTC"
 
         //when
-        dayCandleRepository.deleteAll()
         val syncDayCandle = syncService.syncDayCandle(market, count)
         val findMinuteCandle = dayCandleRepository.findByMarket(market)
 
         //then
         assertThat(syncDayCandle.size).isEqualTo(findMinuteCandle.size)
+    }
+
+    @Test
+    @DisplayName(value = "Batch Day Candle Test")
+    fun batchDayCandleTest() {
+        //given
+        val count = 200
+        val market = "KRW-BTC"
+
+        //when
+        val resultSize = syncService.batchDayCandleWithDate(market, count, "")
+        val findMinuteCandle = dayCandleRepository.findByMarket(market)
+
+        //then
+        assertThat(resultSize).isEqualTo(findMinuteCandle.size)
     }
 
     @Test
