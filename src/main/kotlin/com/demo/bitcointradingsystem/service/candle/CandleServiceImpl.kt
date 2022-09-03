@@ -2,12 +2,17 @@ package com.demo.bitcointradingsystem.service.candle
 
 import com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto
 import com.demo.bitcointradingsystem.dto.responseDto.GetMarketCodeV1Dto
+import com.demo.bitcointradingsystem.dto.responseDto.GetMarketCodeV2Dto
 import com.demo.bitcointradingsystem.dto.responseDto.GetMinuteCandleV1Dto
+import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import org.springframework.stereotype.Service
 import javax.persistence.EntityManager
 
 @Service
-class CandleServiceImpl(private val em: EntityManager) : CandleService {
+class CandleServiceImpl(
+        private val em: EntityManager,
+        private val marketCodeRepository: MarketCodeRepository
+) : CandleService {
 
     @Override
     override fun getMinuteCandle(market: String, unit: Int, count: Int): List<GetMinuteCandleV1Dto> {
@@ -35,10 +40,14 @@ class CandleServiceImpl(private val em: EntityManager) : CandleService {
                 .resultList
     }
 
-    override fun getMarketCode(): List<GetMarketCodeV1Dto> {
+    override fun getMarketCodeV1(): List<GetMarketCodeV1Dto> {
         return em.createQuery(
                 "select new com.demo.bitcointradingsystem.dto.responseDto.GetMarketCodeV1Dto(mc.market, mc.koreanName, mc.englishName) " +
                         "from MarketCode mc", GetMarketCodeV1Dto::class.java)
                 .resultList
+    }
+
+    override fun getMarketCodeV2(): List<GetMarketCodeV2Dto> {
+        return marketCodeRepository.getMarketCodeV2Dto()
     }
 }

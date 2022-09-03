@@ -50,4 +50,17 @@ internal class CandleServiceImplTest {
         assertThat(dayCandles.size).isEqualTo(count)
 
     }
+
+    @Test
+    fun getMarketCodeTest() {
+        //when
+        val marketCodes = candleService.getMarketCodeV2()
+
+        println("marketCodes = ${marketCodes}")
+        println("marketCodes.sortedBy { it.createdDate } = ${marketCodes.sortedBy { it.createdDate }}")
+
+        //then
+        assertThat(marketCodes).isEqualTo(marketCodes.sortedBy { it.createdDate })
+    }
+
 }

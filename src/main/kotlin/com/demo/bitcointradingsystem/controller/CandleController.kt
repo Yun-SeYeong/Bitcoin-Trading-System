@@ -1,9 +1,6 @@
 package com.demo.bitcointradingsystem.controller
 
-import com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto
-import com.demo.bitcointradingsystem.dto.responseDto.GetMarketCodeV1Dto
-import com.demo.bitcointradingsystem.dto.responseDto.GetMinuteCandleV1Dto
-import com.demo.bitcointradingsystem.dto.responseDto.ResponseDto
+import com.demo.bitcointradingsystem.dto.responseDto.*
 import com.demo.bitcointradingsystem.service.candle.CandleService
 import org.springframework.web.bind.annotation.*
 
@@ -32,7 +29,12 @@ class CandleController(
 
     @GetMapping("market-code/v1")
     fun getMarketCodeV1(): ResponseDto<List<GetMarketCodeV1Dto>> {
-        return ResponseDto(candleService.getMarketCode())
+        return ResponseDto(candleService.getMarketCodeV1())
+    }
+
+    @GetMapping("market-code/v2")
+    fun getMarketCodeV2(): ResponseDto<List<GetMarketCodeV2Dto>> {
+        return ResponseDto(candleService.getMarketCodeV2())
     }
 
 }
