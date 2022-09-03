@@ -15,3 +15,7 @@ logging:
       hibernate:
         SQL: debug
         type: trace
+      springframework:
+        jdbc:
+          core: TRACE
+          SQL: debug
