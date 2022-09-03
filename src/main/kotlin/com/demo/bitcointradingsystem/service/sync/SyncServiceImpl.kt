@@ -99,6 +99,7 @@ class SyncServiceImpl(
         val saveAll: List<MarketCode>
         try {
             val candlesDays = upbitService.getMarketAll(isDetails) ?: throw Exception("Fail to load upbit data")
+            marketCodeRepository.deleteAll()
             saveAll = marketCodeRepository.saveAll(candlesDays)
         } catch (e: Exception) {
             logService.failLog(createLog.id!!, "[SYNC SERVICE] day candle sync fail ($e)")

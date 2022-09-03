@@ -2,6 +2,7 @@ package com.demo.bitcointradingsystem.service.candle
 
 import com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto
 import com.demo.bitcointradingsystem.dto.responseDto.GetMarketCodeV1Dto
+import com.demo.bitcointradingsystem.dto.responseDto.GetMarketCodeV2Dto
 import com.demo.bitcointradingsystem.dto.responseDto.GetMinuteCandleV1Dto
 
 interface CandleService {
@@ -9,5 +10,6 @@ interface CandleService {
 
     fun getDayCandle(market: String, count: Int): List<GetDayCandleV1Dto>
 
-    fun getMarketCode(): List<GetMarketCodeV1Dto>
+    fun getMarketCodeV1(): List<GetMarketCodeV1Dto>
+    fun getMarketCodeV2(): List<GetMarketCodeV2Dto>
 }
