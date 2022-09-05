@@ -1,6 +1,7 @@
 package com.demo.bitcointradingsystem
 
 import com.demo.bitcointradingsystem.entity.*
+import com.demo.bitcointradingsystem.repository.DayCandleAnalysisRepository
 import com.demo.bitcointradingsystem.repository.DayCandleRepository
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import java.sql.Timestamp
 import java.time.LocalDateTime
 
 @SpringBootTest
@@ -24,6 +26,9 @@ class DatabaseTest {
 
     @Autowired
     private lateinit var marketCodeRepository: MarketCodeRepository
+
+    @Autowired
+    private lateinit var dayCandleAnalysisRepository: DayCandleAnalysisRepository
 
     @Test
     @DisplayName("MinuteCandle 저장")
@@ -83,7 +88,7 @@ class DatabaseTest {
 
         // when
         val savedDayCandle = dayCandleRepository.save(dayCandle)
-        val findDayCandle = dayCandleRepository.findById(DayCandleKey(savedDayCandle.market, savedDayCandle.timestamp)).get()
+        val findDayCandle = dayCandleRepository.findById(CandleKey(savedDayCandle.candleKey.market, savedDayCandle.candleKey.timestamp)).get()
 
         // then
         assertThat(savedDayCandle).isEqualTo(findDayCandle)
@@ -103,6 +108,23 @@ class DatabaseTest {
         // when
         val savedMarketCode = marketCodeRepository.save(marketCode)
         val findMarketCode = marketCodeRepository.findById(marketCode.market).get()
+
+        // then
+        assertThat(savedMarketCode).isEqualTo(findMarketCode)
+        assertThat(savedMarketCode.hashCode()).isEqualTo(findMarketCode.hashCode())
+    }
+
+    @Test
+    @DisplayName("DayCandleAnalysis 저장")
+    fun saveDayCandleAnalysis() {
+        // given
+        val marketCode = DayCandleMacd(CandleKey("KRW-BTC", Timestamp.valueOf(LocalDateTime.now()).time), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+
+        // when
+        val savedMarketCode = dayCandleAnalysisRepository.save(marketCode)
+        val findMarketCode = dayCandleAnalysisRepository.findById(savedMarketCode.candleKey).get()
+
+        println("savedMarketCode = ${savedMarketCode}")
 
         // then
         assertThat(savedMarketCode).isEqualTo(findMarketCode)

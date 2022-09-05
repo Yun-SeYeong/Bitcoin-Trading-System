@@ -13,4 +13,5 @@ interface SyncService {
     fun batchDayCandleWithDate(market: String, count: Int, to: String): Int
     fun syncLastDayCandle(market: String): DayCandle
     fun syncMarketCode(isDetails: Boolean): List<MarketCode>
+    fun syncDayCandleMacd(market: String): Int
 }

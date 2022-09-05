@@ -1,12 +1,10 @@
 package com.demo.bitcointradingsystem.entity
 
 import java.time.LocalDateTime
+import javax.persistence.EmbeddedId
 import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.IdClass
 
 @Entity
-@IdClass(DayCandleKey::class)
 class DayCandle(
         market: String,
         candleDateTimeUtc: LocalDateTime,
@@ -23,11 +21,8 @@ class DayCandle(
         changeRate: Double,
         convertedTradePrice: Double
 ) {
-        @Id
-        var market: String = market
-                protected set
-        @Id
-        var timestamp: Long = timestamp
+        @EmbeddedId
+        var candleKey: CandleKey = CandleKey(market, timestamp)
                 protected set
 
         var candleDateTimeUtc: LocalDateTime = candleDateTimeUtc
@@ -56,7 +51,7 @@ class DayCandle(
                 protected set
 
         override fun toString(): String {
-                return "DayCandle(market='$market', timestamp=$timestamp, candleDateTimeUtc=$candleDateTimeUtc, candleDateTimeKst=$candleDateTimeKst, openingPrice=$openingPrice, highPrice=$highPrice, lowPrice=$lowPrice, tradePrice=$tradePrice, candleAccTradePrice=$candleAccTradePrice, candleAccTradeVolume=$candleAccTradeVolume, prevClosingPrice=$prevClosingPrice, changePrice=$changePrice, changeRate=$changeRate, convertedTradePrice=$convertedTradePrice)"
+                return "DayCandle(candleKey=$candleKey, candleDateTimeUtc=$candleDateTimeUtc, candleDateTimeKst=$candleDateTimeKst, openingPrice=$openingPrice, highPrice=$highPrice, lowPrice=$lowPrice, tradePrice=$tradePrice, candleAccTradePrice=$candleAccTradePrice, candleAccTradeVolume=$candleAccTradeVolume, prevClosingPrice=$prevClosingPrice, changePrice=$changePrice, changeRate=$changeRate, convertedTradePrice=$convertedTradePrice)"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -65,16 +60,13 @@ class DayCandle(
 
                 other as DayCandle
 
-                if (market != other.market) return false
-                if (timestamp != other.timestamp) return false
+                if (candleKey != other.candleKey) return false
 
                 return true
         }
 
         override fun hashCode(): Int {
-                var result = market.hashCode()
-                result = 31 * result + timestamp.hashCode()
-                return result
+                return candleKey.hashCode()
         }
 
 

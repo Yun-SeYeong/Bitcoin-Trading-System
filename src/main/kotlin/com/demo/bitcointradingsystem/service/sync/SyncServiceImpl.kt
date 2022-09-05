@@ -1,8 +1,7 @@
 package com.demo.bitcointradingsystem.service.sync
 
-import com.demo.bitcointradingsystem.entity.DayCandle
-import com.demo.bitcointradingsystem.entity.MarketCode
-import com.demo.bitcointradingsystem.entity.MinuteCandle
+import com.demo.bitcointradingsystem.entity.*
+import com.demo.bitcointradingsystem.repository.DayCandleAnalysisRepository
 import com.demo.bitcointradingsystem.repository.DayCandleRepository
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
@@ -19,6 +18,7 @@ class SyncServiceImpl(
         private val minuteCandleRepository: MinuteCandleRepository,
         private val dayCandleRepository: DayCandleRepository,
         private val marketCodeRepository: MarketCodeRepository,
+        private val dayCandleAnalysisRepository: DayCandleAnalysisRepository,
         private val logService: LogService,
         private val jdbcTemplate: JdbcTemplate
 ) : SyncService {
@@ -66,8 +66,8 @@ class SyncServiceImpl(
                 setDouble(10, argument.openingPrice)
                 setDouble(11, argument.prevClosingPrice)
                 setDouble(12, argument.tradePrice)
-                setString(13, argument.market)
-                setLong(14, argument.timestamp)
+                setString(13, argument.candleKey.market)
+                setLong(14, argument.candleKey.timestamp)
             }
         }.sumOf { it.size }
     }
@@ -157,6 +157,7 @@ class SyncServiceImpl(
                     ?: throw Exception("Fail to load upbit data")
             dayCandleRepository.deleteAllInBatch(candlesDays)
             resultSize = insertDayCandle(1000, candlesDays)
+            syncDayCandleMacd(market)
         } catch (e: Exception) {
             logService.failLog(createLog.id!!, "[SYNC SERVICE] day candle sync fail ($e)")
             throw e
@@ -192,5 +193,49 @@ class SyncServiceImpl(
         }
         logService.successLog(createLog.id!!, "[SYNC SERVICE] day candle sync success")
         return saveAll
+    }
+
+    override fun syncDayCandleMacd(market: String): Int {
+        val createLog = logService.createLog("[SYNC SERVICE] start day candle macd sync (market = [${market}])")
+        val resultSize: Int
+        try {
+            val findByMarket = dayCandleRepository.findByMarket(market)
+
+            val dayCandleMacdList = ArrayList<DayCandleMacd>()
+
+            for (i in 0 until (findByMarket.size - 4)) {
+                findByMarket.drop(0)
+                dayCandleMacdList.add(
+                        DayCandleMacd(CandleKey(
+                                findByMarket[i].candleKey.market,
+                                findByMarket[i].candleKey.timestamp),
+                                getMacd(findByMarket, i, 5),
+                                getMacd(findByMarket, i, 10),
+                                getMacd(findByMarket, i, 15),
+                                getMacd(findByMarket, i, 20),
+                                getMacd(findByMarket, i, 60),
+                                getMacd(findByMarket, i, 120)
+                        )
+                )
+            }
+            dayCandleAnalysisRepository.saveAll(dayCandleMacdList)
+            resultSize = dayCandleMacdList.size
+        } catch (e: Exception) {
+            logService.failLog(createLog.id!!, "[SYNC SERVICE] day candle macd sync fail ($e)")
+            throw e
+        }
+        logService.successLog(createLog.id!!, "[SYNC SERVICE] day candle macd sync success")
+        return resultSize
+    }
+
+    private fun getMacd(findByMarket: List<DayCandle>, i: Int, unit: Int): Double? {
+        return if (findByMarket.size - i >= unit) {
+            findByMarket
+                    .map { it.tradePrice }
+                    .take(unit)
+                    .average()
+        } else {
+            null
+        }
     }
 }
