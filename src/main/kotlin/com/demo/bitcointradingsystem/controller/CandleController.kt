@@ -37,4 +37,14 @@ class CandleController(
         return ResponseDto(candleService.getMarketCodeV2())
     }
 
+    @GetMapping("day-candle/ma/v1")
+    fun getDayCandleMaV1(
+            @RequestParam market: String,
+            @RequestParam count: Int
+    ) : ResponseDto<List<GetDayCandleMaV1Dto>> {
+        return ResponseDto(
+                candleService.getDayCandleMa(market, count)
+        )
+    }
+
 }

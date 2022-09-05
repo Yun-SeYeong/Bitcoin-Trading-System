@@ -1,5 +1,8 @@
 package com.demo.bitcointradingsystem.service.sync
 
+import com.demo.bitcointradingsystem.entity.CandleKey
+import com.demo.bitcointradingsystem.entity.DayCandle
+import com.demo.bitcointradingsystem.entity.DayCandleMacd
 import com.demo.bitcointradingsystem.repository.DayCandleRepository
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
@@ -171,5 +174,53 @@ internal class SyncServiceImplTest {
 
         //then
         assertThat(syncMarketCode.size).isEqualTo(findMarketcode.size)
+    }
+
+    @Test
+    fun analysisDayCandleMacd() {
+        //given
+        val market = "KRW-BTC"
+        syncService.syncDayCandle(market, 200)
+
+        //when
+        val findByMarket = dayCandleRepository.findByMarket(market)
+
+        val dayCandleMacdList = ArrayList<DayCandleMacd>()
+
+        for (i in 0 until (findByMarket.size - 4)) {
+            findByMarket.drop(0)
+            dayCandleMacdList.add(
+                    DayCandleMacd(CandleKey(
+                            findByMarket.get(i).candleKey.market,
+                            findByMarket.get(i).candleKey.timestamp),
+                            getMacd(findByMarket, i, 5),
+                            getMacd(findByMarket, i, 10),
+                            getMacd(findByMarket, i, 15),
+                            getMacd(findByMarket, i, 20),
+                            getMacd(findByMarket, i, 60),
+                            getMacd(findByMarket, i, 120)
+                    )
+            )
+        }
+
+        println("dayCandleMacdList = ${dayCandleMacdList}")
+
+        assertThat(dayCandleMacdList[0].ma5).isEqualTo(findByMarket.map { it.tradePrice }.take(5).average())
+        assertThat(dayCandleMacdList[0].ma10).isEqualTo(findByMarket.map { it.tradePrice }.take(10).average())
+        assertThat(dayCandleMacdList[0].ma15).isEqualTo(findByMarket.map { it.tradePrice }.take(15).average())
+        assertThat(dayCandleMacdList[0].ma20).isEqualTo(findByMarket.map { it.tradePrice }.take(20).average())
+        assertThat(dayCandleMacdList[0].ma60).isEqualTo(findByMarket.map { it.tradePrice }.take(60).average())
+        assertThat(dayCandleMacdList[0].ma120).isEqualTo(findByMarket.map { it.tradePrice }.take(120).average())
+    }
+
+    private fun getMacd(findByMarket: List<DayCandle>, i: Int, unit: Int): Double? {
+        return if (findByMarket.size - i >= unit) {
+            findByMarket
+                    .map { it.tradePrice }
+                    .take(unit)
+                    .average()
+        } else {
+            null
+        }
     }
 }
