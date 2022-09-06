@@ -3,15 +3,15 @@ package com.demo.bitcointradingsystem.entity
 import javax.persistence.Entity
 
 @Entity
-class DayCandleMacd(
-        candleKey: CandleKey,
+class MinuteCandleMacd(
+        minuteCandleKey: MinuteCandleKey,
         ma5: Double?,
         ma10: Double?,
         ma15: Double?,
         ma20: Double?,
         ma60: Double?,
         ma120: Double?,
-) : DayCandleAnalysis(candleKey) {
+) : MinuteCandleAnalysis(minuteCandleKey) {
     var ma5: Double? = ma5
         protected set
     var ma10: Double? = ma10
@@ -26,7 +26,8 @@ class DayCandleMacd(
         protected set
 
     override fun toString(): String {
-        return "DayCandleMacd(candleKey=${super.candleKey}, ma5=$ma5, ma10=$ma10, ma15=$ma15, ma20=$ma20, ma60=$ma60, ma120=$ma120)"
+        return "MinuteCandleMacd(candleKey=${super.minuteCandleKey}, ma5=$ma5, ma10=$ma10, ma15=$ma15, ma20=$ma20, ma60=$ma60, ma120=$ma120)"
     }
+
 
 }

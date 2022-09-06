@@ -47,4 +47,15 @@ class CandleController(
         )
     }
 
+    @GetMapping("minute-candle/ma/v1/{unit}")
+    fun getMinuteCandleMaV1(
+            @PathVariable unit: Int,
+            @RequestParam market: String,
+            @RequestParam count: Int
+    ) : ResponseDto<List<GetMinuteCandleMaV1Dto>>{
+        return ResponseDto(
+                candleService.getMinuteCandleMa(market, count)
+        )
+    }
+
 }

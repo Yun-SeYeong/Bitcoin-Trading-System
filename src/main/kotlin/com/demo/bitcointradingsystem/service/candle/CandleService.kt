@@ -10,4 +10,5 @@ interface CandleService {
     fun getMarketCodeV1(): List<GetMarketCodeV1Dto>
     fun getMarketCodeV2(): List<GetMarketCodeV2Dto>
     fun getDayCandleMa(market: String, count: Int): List<GetDayCandleMaV1Dto>
+    fun getMinuteCandleMa(market: String, count: Int): List<GetMinuteCandleMaV1Dto>
 }

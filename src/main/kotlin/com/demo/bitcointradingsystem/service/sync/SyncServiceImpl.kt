@@ -1,10 +1,7 @@
 package com.demo.bitcointradingsystem.service.sync
 
 import com.demo.bitcointradingsystem.entity.*
-import com.demo.bitcointradingsystem.repository.DayCandleAnalysisRepository
-import com.demo.bitcointradingsystem.repository.DayCandleRepository
-import com.demo.bitcointradingsystem.repository.MarketCodeRepository
-import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
+import com.demo.bitcointradingsystem.repository.*
 import com.demo.bitcointradingsystem.service.joblog.LogService
 import com.demo.bitcointradingsystem.service.upbit.UpbitService
 import org.springframework.jdbc.core.JdbcTemplate
@@ -19,6 +16,7 @@ class SyncServiceImpl(
         private val dayCandleRepository: DayCandleRepository,
         private val marketCodeRepository: MarketCodeRepository,
         private val dayCandleAnalysisRepository: DayCandleAnalysisRepository,
+        private val minuteCandleAnalysisRepository: MinuteCandleAnalysisRepository,
         private val logService: LogService,
         private val jdbcTemplate: JdbcTemplate
 ) : SyncService {
@@ -111,6 +109,7 @@ class SyncServiceImpl(
                     ?: throw Exception("Fail to load upbit data")
             minuteCandleRepository.deleteAllInBatch(minuteCandleArray)
             resultSize = insertMinuteCandle(1000, minuteCandleArray)
+            syncMinuteCandleMacd(market, unit)
         } catch (e: Exception) {
             logService.failLog(createLog.id!!, "[SYNC SERVICE] minute candle sync fail ($e)")
             throw e
@@ -204,19 +203,20 @@ class SyncServiceImpl(
             val dayCandleMacdList = ArrayList<DayCandleMacd>()
 
             for (i in 0 until (findByMarket.size - 4)) {
-                findByMarket.drop(0)
+                val tradePriceList = findByMarket.map { it.tradePrice }
                 dayCandleMacdList.add(
                         DayCandleMacd(CandleKey(
                                 findByMarket[i].candleKey.market,
                                 findByMarket[i].candleKey.timestamp),
-                                getMacd(findByMarket, i, 5),
-                                getMacd(findByMarket, i, 10),
-                                getMacd(findByMarket, i, 15),
-                                getMacd(findByMarket, i, 20),
-                                getMacd(findByMarket, i, 60),
-                                getMacd(findByMarket, i, 120)
+                                getMacd(tradePriceList, i, 5),
+                                getMacd(tradePriceList, i, 10),
+                                getMacd(tradePriceList, i, 15),
+                                getMacd(tradePriceList, i, 20),
+                                getMacd(tradePriceList, i, 60),
+                                getMacd(tradePriceList, i, 120)
                         )
                 )
+                findByMarket.drop(0)
             }
             dayCandleAnalysisRepository.saveAll(dayCandleMacdList)
             resultSize = dayCandleMacdList.size
@@ -228,10 +228,44 @@ class SyncServiceImpl(
         return resultSize
     }
 
-    private fun getMacd(findByMarket: List<DayCandle>, i: Int, unit: Int): Double? {
+    override fun syncMinuteCandleMacd(market: String, unit: Int): Int {
+        val createLog = logService.createLog("[SYNC SERVICE] start minute candle macd sync (market = [${market}], unit = [${unit}])")
+        val resultSize: Int
+        try {
+            val findByMarket = minuteCandleRepository.findByMarketAndUnitOrderByTimestampDesc(market, unit)
+
+            val minuteCandleMacdList = ArrayList<MinuteCandleMacd>()
+
+            for (i in 0 until (findByMarket.size - 4)) {
+                val tradePriceList = findByMarket.map { it.tradePrice }
+                minuteCandleMacdList.add(
+                        MinuteCandleMacd(MinuteCandleKey(
+                                findByMarket[i].market,
+                                findByMarket[i].timestamp,
+                                findByMarket[i].unit),
+                                getMacd(tradePriceList, i, 5),
+                                getMacd(tradePriceList, i, 10),
+                                getMacd(tradePriceList, i, 15),
+                                getMacd(tradePriceList, i, 20),
+                                getMacd(tradePriceList, i, 60),
+                                getMacd(tradePriceList, i, 120)
+                        )
+                )
+                findByMarket.drop(0)
+            }
+            minuteCandleAnalysisRepository.saveAll(minuteCandleMacdList)
+            resultSize = minuteCandleMacdList.size
+        } catch (e: Exception) {
+            logService.failLog(createLog.id!!, "[SYNC SERVICE] minute candle macd sync fail ($e)")
+            throw e
+        }
+        logService.successLog(createLog.id!!, "[SYNC SERVICE] minute candle macd sync success")
+        return resultSize
+    }
+
+    private fun getMacd(findByMarket: List<Double>, i: Int, unit: Int): Double? {
         return if (findByMarket.size - i >= unit) {
             findByMarket
-                    .map { it.tradePrice }
                     .take(unit)
                     .average()
         } else {
