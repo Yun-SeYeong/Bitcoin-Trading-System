@@ -54,7 +54,7 @@ class DatabaseTest {
 
         // when
         val savedMinuteCandle = minuteCandleRepository.save(minuteCandle)
-        val findMinuteCandle = minuteCandleRepository.findById(MinuteCandleKey(minuteCandle.market, minuteCandle.timestamp)).get()
+        val findMinuteCandle = minuteCandleRepository.findById(MinuteCandleKey(minuteCandle.market, minuteCandle.timestamp, minuteCandle.unit)).get()
 
         // then
         assertThat(findMinuteCandle).isEqualTo(savedMinuteCandle)

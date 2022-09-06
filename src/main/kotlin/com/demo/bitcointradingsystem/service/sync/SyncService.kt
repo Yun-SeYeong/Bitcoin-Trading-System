@@ -14,4 +14,5 @@ interface SyncService {
     fun syncLastDayCandle(market: String): DayCandle
     fun syncMarketCode(isDetails: Boolean): List<MarketCode>
     fun syncDayCandleMacd(market: String): Int
+    fun syncMinuteCandleMacd(market: String, unit: Int): Int
 }

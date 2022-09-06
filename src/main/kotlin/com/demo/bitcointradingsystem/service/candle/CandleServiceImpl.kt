@@ -2,6 +2,7 @@ package com.demo.bitcointradingsystem.service.candle
 
 import com.demo.bitcointradingsystem.dto.responseDto.*
 import com.demo.bitcointradingsystem.entity.DayCandleMacd
+import com.demo.bitcointradingsystem.entity.MinuteCandleMacd
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -61,6 +62,19 @@ class CandleServiceImpl(
                     GetDayCandleMaV1Dto(
                             it.candleKey.market,
                             LocalDateTime.ofInstant(Instant.ofEpochMilli(it.candleKey.timestamp), TimeZone.getDefault().toZoneId()).toString(),
+                            it.ma5, it.ma10, it.ma15, it.ma20, it.ma60, it.ma120)
+                }
+    }
+
+    override fun getMinuteCandleMa(market: String, count: Int): List<GetMinuteCandleMaV1Dto> {
+        return em.createQuery("select ma from MinuteCandleMacd ma where ma.minuteCandleKey.market = :market order by ma.minuteCandleKey.timestamp desc", MinuteCandleMacd::class.java)
+                .setParameter("market", market)
+                .setMaxResults(count)
+                .resultList
+                .map {
+                    GetMinuteCandleMaV1Dto(
+                            it.minuteCandleKey.market!!,
+                            LocalDateTime.ofInstant(Instant.ofEpochMilli(it.minuteCandleKey.timestamp!!), TimeZone.getDefault().toZoneId()).toString(),
                             it.ma5, it.ma10, it.ma15, it.ma20, it.ma60, it.ma120)
                 }
     }

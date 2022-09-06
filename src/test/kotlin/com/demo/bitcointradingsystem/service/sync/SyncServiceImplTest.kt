@@ -1,11 +1,6 @@
 package com.demo.bitcointradingsystem.service.sync
 
-import com.demo.bitcointradingsystem.entity.CandleKey
-import com.demo.bitcointradingsystem.entity.DayCandle
-import com.demo.bitcointradingsystem.entity.DayCandleMacd
-import com.demo.bitcointradingsystem.repository.DayCandleRepository
-import com.demo.bitcointradingsystem.repository.MarketCodeRepository
-import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
+import com.demo.bitcointradingsystem.repository.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -32,6 +27,12 @@ internal class SyncServiceImplTest {
 
     @Autowired
     private lateinit var marketCodeRepository: MarketCodeRepository
+
+    @Autowired
+    private lateinit var dayCandleAnalysisRepository: DayCandleAnalysisRepository
+
+    @Autowired
+    private lateinit var minuteCandleAnalysisRepository: MinuteCandleAnalysisRepository
 
     @PostConstruct
     fun init() {
@@ -180,47 +181,39 @@ internal class SyncServiceImplTest {
     fun analysisDayCandleMacd() {
         //given
         val market = "KRW-BTC"
-        syncService.syncDayCandle(market, 200)
+        val count = 200
+        syncService.batchDayCandleWithDate(market, count, "")
 
         //when
-        val findByMarket = dayCandleRepository.findByMarket(market)
+        val findByMarket = dayCandleAnalysisRepository.findByMarket(market)
+        val tradeList = dayCandleRepository.findByMarket(market).map { it.tradePrice }
 
-        val dayCandleMacdList = ArrayList<DayCandleMacd>()
-
-        for (i in 0 until (findByMarket.size - 4)) {
-            findByMarket.drop(0)
-            dayCandleMacdList.add(
-                    DayCandleMacd(CandleKey(
-                            findByMarket.get(i).candleKey.market,
-                            findByMarket.get(i).candleKey.timestamp),
-                            getMacd(findByMarket, i, 5),
-                            getMacd(findByMarket, i, 10),
-                            getMacd(findByMarket, i, 15),
-                            getMacd(findByMarket, i, 20),
-                            getMacd(findByMarket, i, 60),
-                            getMacd(findByMarket, i, 120)
-                    )
-            )
-        }
-
-        println("dayCandleMacdList = ${dayCandleMacdList}")
-
-        assertThat(dayCandleMacdList[0].ma5).isEqualTo(findByMarket.map { it.tradePrice }.take(5).average())
-        assertThat(dayCandleMacdList[0].ma10).isEqualTo(findByMarket.map { it.tradePrice }.take(10).average())
-        assertThat(dayCandleMacdList[0].ma15).isEqualTo(findByMarket.map { it.tradePrice }.take(15).average())
-        assertThat(dayCandleMacdList[0].ma20).isEqualTo(findByMarket.map { it.tradePrice }.take(20).average())
-        assertThat(dayCandleMacdList[0].ma60).isEqualTo(findByMarket.map { it.tradePrice }.take(60).average())
-        assertThat(dayCandleMacdList[0].ma120).isEqualTo(findByMarket.map { it.tradePrice }.take(120).average())
+        assertThat(findByMarket[0].ma5).isEqualTo(tradeList.take(5).average())
+        assertThat(findByMarket[0].ma10).isEqualTo(tradeList.take(10).average())
+        assertThat(findByMarket[0].ma15).isEqualTo(tradeList.take(15).average())
+        assertThat(findByMarket[0].ma20).isEqualTo(tradeList.take(20).average())
+        assertThat(findByMarket[0].ma60).isEqualTo(tradeList.take(60).average())
+        assertThat(findByMarket[0].ma120).isEqualTo(tradeList.take(120).average())
     }
 
-    private fun getMacd(findByMarket: List<DayCandle>, i: Int, unit: Int): Double? {
-        return if (findByMarket.size - i >= unit) {
-            findByMarket
-                    .map { it.tradePrice }
-                    .take(unit)
-                    .average()
-        } else {
-            null
-        }
+    @Test
+    fun analysisMinuteCandleMacd() {
+        // given
+        val market = "KRW-BTC"
+        val unit = 3
+        val count = 200
+        syncService.batchMinuteCandleWithDate(unit, market, count, "")
+
+        // when
+        val findByMarketAndUnit = minuteCandleAnalysisRepository.findByMarketAndUnit(market, unit)
+
+        val tradeList = minuteCandleRepository.findByMarketAndUnit(market, unit).map { it.tradePrice }
+
+        assertThat(findByMarketAndUnit[0].ma5).isEqualTo(tradeList.take(5).average())
+        assertThat(findByMarketAndUnit[0].ma15).isEqualTo(tradeList.take(15).average())
+        assertThat(findByMarketAndUnit[0].ma20).isEqualTo(tradeList.take(20).average())
+        assertThat(findByMarketAndUnit[0].ma60).isEqualTo(tradeList.take(60).average())
+        assertThat(findByMarketAndUnit[0].ma120).isEqualTo(tradeList.take(120).average())
     }
+
 }

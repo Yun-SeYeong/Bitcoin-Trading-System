@@ -1,8 +1,11 @@
 package com.demo.bitcointradingsystem.entity
 
 import java.io.Serializable
+import javax.persistence.Embeddable
 
-class MinuteCandleKey (
-        private var market: String? = null,
-        private var timestamp: Long? = null
+@Embeddable
+data class MinuteCandleKey (
+        var market: String? = null,
+        var timestamp: Long? = null,
+        var unit: Int? = null
 ): Serializable

@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface MinuteCandleRepository : JpaRepository<MinuteCandle, MinuteCandleKey>{
 
-    fun findByMarketAndUnit(market: String, unit: Int): List<MinuteCandle>
+    fun findByMarketAndUnitOrderByTimestampDesc(market: String, unit: Int): List<MinuteCandle>
 }
