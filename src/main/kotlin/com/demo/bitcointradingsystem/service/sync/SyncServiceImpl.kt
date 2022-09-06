@@ -36,9 +36,9 @@ class SyncServiceImpl(
                 setDouble(6, argument.lowPrice)
                 setDouble(7, argument.openingPrice)
                 setDouble(8, argument.tradePrice)
-                setInt(9, argument.unit)
-                setString(10, argument.market)
-                setLong(11, argument.timestamp)
+                setInt(9, argument.minuteCandleKey.unit)
+                setString(10, argument.minuteCandleKey.market)
+                setLong(11, argument.minuteCandleKey.timestamp)
             }
         }.sumOf { it.size }
     }
@@ -64,8 +64,8 @@ class SyncServiceImpl(
                 setDouble(10, argument.openingPrice)
                 setDouble(11, argument.prevClosingPrice)
                 setDouble(12, argument.tradePrice)
-                setString(13, argument.candleKey.market)
-                setLong(14, argument.candleKey.timestamp)
+                setString(13, argument.dayCandleKey.market)
+                setLong(14, argument.dayCandleKey.timestamp)
             }
         }.sumOf { it.size }
     }
@@ -205,9 +205,9 @@ class SyncServiceImpl(
             for (i in 0 until (findByMarket.size - 4)) {
                 val tradePriceList = findByMarket.map { it.tradePrice }
                 dayCandleMacdList.add(
-                        DayCandleMacd(CandleKey(
-                                findByMarket[i].candleKey.market,
-                                findByMarket[i].candleKey.timestamp),
+                        DayCandleMacd(DayCandleKey(
+                                findByMarket[i].dayCandleKey.market,
+                                findByMarket[i].dayCandleKey.timestamp),
                                 getMacd(tradePriceList, i, 5),
                                 getMacd(tradePriceList, i, 10),
                                 getMacd(tradePriceList, i, 15),
@@ -232,7 +232,7 @@ class SyncServiceImpl(
         val createLog = logService.createLog("[SYNC SERVICE] start minute candle macd sync (market = [${market}], unit = [${unit}])")
         val resultSize: Int
         try {
-            val findByMarket = minuteCandleRepository.findByMarketAndUnitOrderByTimestampDesc(market, unit)
+            val findByMarket = minuteCandleRepository.findByMarketAndUnit(market, unit)
 
             val minuteCandleMacdList = ArrayList<MinuteCandleMacd>()
 
@@ -240,9 +240,9 @@ class SyncServiceImpl(
                 val tradePriceList = findByMarket.map { it.tradePrice }
                 minuteCandleMacdList.add(
                         MinuteCandleMacd(MinuteCandleKey(
-                                findByMarket[i].market,
-                                findByMarket[i].timestamp,
-                                findByMarket[i].unit),
+                                findByMarket[i].minuteCandleKey.market,
+                                findByMarket[i].minuteCandleKey.timestamp,
+                                findByMarket[i].minuteCandleKey.unit),
                                 getMacd(tradePriceList, i, 5),
                                 getMacd(tradePriceList, i, 10),
                                 getMacd(tradePriceList, i, 15),

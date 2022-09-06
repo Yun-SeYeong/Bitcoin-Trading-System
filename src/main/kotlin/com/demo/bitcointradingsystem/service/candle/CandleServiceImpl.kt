@@ -20,9 +20,9 @@ class CandleServiceImpl(
     override fun getMinuteCandle(market: String, unit: Int, count: Int): List<GetMinuteCandleV1Dto> {
         return em.createQuery(
                 "select " +
-                        "new com.demo.bitcointradingsystem.dto.responseDto.GetMinuteCandleV1Dto(mc.market, mc.candleDateTimeKst, mc.openingPrice, mc.highPrice, mc.lowPrice, mc.tradePrice, mc.candleAccTradeVolume) " +
+                        "new com.demo.bitcointradingsystem.dto.responseDto.GetMinuteCandleV1Dto(mc.minuteCandleKey.market, mc.candleDateTimeKst, mc.openingPrice, mc.highPrice, mc.lowPrice, mc.tradePrice, mc.candleAccTradeVolume) " +
                         "from MinuteCandle mc " +
-                        "where mc.market=:market and mc.unit=:unit " +
+                        "where mc.minuteCandleKey.market=:market and mc.minuteCandleKey.unit=:unit " +
                         "order by mc.candleDateTimeKst desc", GetMinuteCandleV1Dto::class.java)
                 .setParameter("market", market)
                 .setParameter("unit", unit)
@@ -33,9 +33,9 @@ class CandleServiceImpl(
     @Override
     override fun getDayCandle(market: String, count: Int): List<GetDayCandleV1Dto> {
         return em.createQuery(
-                "select new com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto(dc.candleKey.market, dc.candleDateTimeKst, dc.openingPrice, dc.highPrice, dc.lowPrice, dc.tradePrice, dc.candleAccTradeVolume) " +
+                "select new com.demo.bitcointradingsystem.dto.responseDto.GetDayCandleV1Dto(dc.dayCandleKey.market, dc.candleDateTimeKst, dc.openingPrice, dc.highPrice, dc.lowPrice, dc.tradePrice, dc.candleAccTradeVolume) " +
                         "from DayCandle dc " +
-                        "where dc.candleKey.market=:market " +
+                        "where dc.dayCandleKey.market=:market " +
                         "order by dc.candleDateTimeKst desc", GetDayCandleV1Dto::class.java)
                 .setParameter("market", market)
                 .setMaxResults(count)
@@ -54,14 +54,14 @@ class CandleServiceImpl(
     }
 
     override fun getDayCandleMa(market: String, count: Int): List<GetDayCandleMaV1Dto> {
-        return em.createQuery("select ma from DayCandleMacd ma where ma.candleKey.market = :market order by ma.candleKey.timestamp desc", DayCandleMacd::class.java)
+        return em.createQuery("select ma from DayCandleMacd ma where ma.dayCandleKey.market = :market order by ma.dayCandleKey.timestamp desc", DayCandleMacd::class.java)
                 .setParameter("market", market)
                 .setMaxResults(count)
                 .resultList
                 .map {
                     GetDayCandleMaV1Dto(
-                            it.candleKey.market,
-                            LocalDateTime.ofInstant(Instant.ofEpochMilli(it.candleKey.timestamp), TimeZone.getDefault().toZoneId()).toString(),
+                            it.dayCandleKey.market,
+                            LocalDateTime.ofInstant(Instant.ofEpochMilli(it.dayCandleKey.timestamp), TimeZone.getDefault().toZoneId()).toString(),
                             it.ma5, it.ma10, it.ma15, it.ma20, it.ma60, it.ma120)
                 }
     }

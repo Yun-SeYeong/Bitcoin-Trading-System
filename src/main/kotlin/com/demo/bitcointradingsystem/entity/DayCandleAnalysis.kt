@@ -7,14 +7,14 @@ import javax.persistence.Inheritance
 @Entity
 @Inheritance
 class DayCandleAnalysis(
-        candleKey: CandleKey
+        dayCandleKey: DayCandleKey
 ) {
     @EmbeddedId
-    var candleKey: CandleKey = candleKey
+    var dayCandleKey: DayCandleKey = dayCandleKey
         protected set
 
     override fun toString(): String {
-        return "DayCandleAnalysis(candleKey=$candleKey)"
+        return "DayCandleAnalysis(candleKey=$dayCandleKey)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -23,13 +23,13 @@ class DayCandleAnalysis(
 
         other as DayCandleAnalysis
 
-        if (candleKey != other.candleKey) return false
+        if (dayCandleKey != other.dayCandleKey) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return candleKey.hashCode()
+        return dayCandleKey.hashCode()
     }
 
 

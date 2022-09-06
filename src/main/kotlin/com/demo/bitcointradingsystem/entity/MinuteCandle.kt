@@ -1,12 +1,10 @@
 package com.demo.bitcointradingsystem.entity
 
 import java.time.LocalDateTime
+import javax.persistence.EmbeddedId
 import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.IdClass
 
 @Entity
-@IdClass(MinuteCandleKey::class)
 class MinuteCandle(
         market: String,
         candleDateTimeUtc: LocalDateTime,
@@ -20,11 +18,8 @@ class MinuteCandle(
         candleAccTradeVolume: Double,
         unit: Int
 ) {
-    @Id
-    var market: String = market
-        protected set
-    @Id
-    var timestamp: Long = timestamp
+    @EmbeddedId
+    var minuteCandleKey: MinuteCandleKey = MinuteCandleKey(market, timestamp, unit)
         protected set
     var candleDateTimeUtc: LocalDateTime = candleDateTimeUtc
         protected set
@@ -42,11 +37,9 @@ class MinuteCandle(
         protected set
     var candleAccTradeVolume: Double = candleAccTradeVolume
         protected set
-    var unit: Int = unit
-        protected set
 
     override fun toString(): String {
-        return "MinuteCandle(market='$market', timestamp=$timestamp, candleDateTimeUtc=$candleDateTimeUtc, candleDateTimeKst=$candleDateTimeKst, openingPrice=$openingPrice, highPrice=$highPrice, lowPrice=$lowPrice, tradePrice=$tradePrice, candleAccTradePrice=$candleAccTradePrice, candleAccTradeVolume=$candleAccTradeVolume, unit=$unit)"
+        return "MinuteCandle(minuteCandleKey=$minuteCandleKey, candleDateTimeUtc=$candleDateTimeUtc, candleDateTimeKst=$candleDateTimeKst, openingPrice=$openingPrice, highPrice=$highPrice, lowPrice=$lowPrice, tradePrice=$tradePrice, candleAccTradePrice=$candleAccTradePrice, candleAccTradeVolume=$candleAccTradeVolume)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -55,16 +48,13 @@ class MinuteCandle(
 
         other as MinuteCandle
 
-        if (market != other.market) return false
-        if (timestamp != other.timestamp) return false
+        if (minuteCandleKey != other.minuteCandleKey) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = market.hashCode()
-        result = 31 * result + timestamp.hashCode()
-        return result
+        return minuteCandleKey.hashCode()
     }
 
 

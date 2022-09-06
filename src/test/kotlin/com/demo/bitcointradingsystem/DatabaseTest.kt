@@ -54,7 +54,7 @@ class DatabaseTest {
 
         // when
         val savedMinuteCandle = minuteCandleRepository.save(minuteCandle)
-        val findMinuteCandle = minuteCandleRepository.findById(MinuteCandleKey(minuteCandle.market, minuteCandle.timestamp, minuteCandle.unit)).get()
+        val findMinuteCandle = minuteCandleRepository.findById(MinuteCandleKey(minuteCandle.minuteCandleKey.market, minuteCandle.minuteCandleKey.timestamp, minuteCandle.minuteCandleKey.unit)).get()
 
         // then
         assertThat(findMinuteCandle).isEqualTo(savedMinuteCandle)
@@ -88,7 +88,7 @@ class DatabaseTest {
 
         // when
         val savedDayCandle = dayCandleRepository.save(dayCandle)
-        val findDayCandle = dayCandleRepository.findById(CandleKey(savedDayCandle.candleKey.market, savedDayCandle.candleKey.timestamp)).get()
+        val findDayCandle = dayCandleRepository.findById(DayCandleKey(savedDayCandle.dayCandleKey.market, savedDayCandle.dayCandleKey.timestamp)).get()
 
         // then
         assertThat(savedDayCandle).isEqualTo(findDayCandle)
@@ -118,11 +118,11 @@ class DatabaseTest {
     @DisplayName("DayCandleAnalysis 저장")
     fun saveDayCandleAnalysis() {
         // given
-        val marketCode = DayCandleMacd(CandleKey("KRW-BTC", Timestamp.valueOf(LocalDateTime.now()).time), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        val marketCode = DayCandleMacd(DayCandleKey("KRW-BTC", Timestamp.valueOf(LocalDateTime.now()).time), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
         // when
         val savedMarketCode = dayCandleAnalysisRepository.save(marketCode)
-        val findMarketCode = dayCandleAnalysisRepository.findById(savedMarketCode.candleKey).get()
+        val findMarketCode = dayCandleAnalysisRepository.findById(savedMarketCode.dayCandleKey).get()
 
         println("savedMarketCode = ${savedMarketCode}")
 

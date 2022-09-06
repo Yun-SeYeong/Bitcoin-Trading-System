@@ -5,7 +5,7 @@ import javax.persistence.Embeddable
 
 @Embeddable
 data class MinuteCandleKey (
-        var market: String? = null,
-        var timestamp: Long? = null,
-        var unit: Int? = null
+        var market: String,
+        var timestamp: Long,
+        var unit: Int
 ): Serializable

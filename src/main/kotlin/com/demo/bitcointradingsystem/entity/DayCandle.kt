@@ -22,7 +22,7 @@ class DayCandle(
         convertedTradePrice: Double
 ) {
         @EmbeddedId
-        var candleKey: CandleKey = CandleKey(market, timestamp)
+        var dayCandleKey: DayCandleKey = DayCandleKey(market, timestamp)
                 protected set
 
         var candleDateTimeUtc: LocalDateTime = candleDateTimeUtc
@@ -51,7 +51,7 @@ class DayCandle(
                 protected set
 
         override fun toString(): String {
-                return "DayCandle(candleKey=$candleKey, candleDateTimeUtc=$candleDateTimeUtc, candleDateTimeKst=$candleDateTimeKst, openingPrice=$openingPrice, highPrice=$highPrice, lowPrice=$lowPrice, tradePrice=$tradePrice, candleAccTradePrice=$candleAccTradePrice, candleAccTradeVolume=$candleAccTradeVolume, prevClosingPrice=$prevClosingPrice, changePrice=$changePrice, changeRate=$changeRate, convertedTradePrice=$convertedTradePrice)"
+                return "DayCandle(candleKey=$dayCandleKey, candleDateTimeUtc=$candleDateTimeUtc, candleDateTimeKst=$candleDateTimeKst, openingPrice=$openingPrice, highPrice=$highPrice, lowPrice=$lowPrice, tradePrice=$tradePrice, candleAccTradePrice=$candleAccTradePrice, candleAccTradeVolume=$candleAccTradeVolume, prevClosingPrice=$prevClosingPrice, changePrice=$changePrice, changeRate=$changeRate, convertedTradePrice=$convertedTradePrice)"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -60,13 +60,13 @@ class DayCandle(
 
                 other as DayCandle
 
-                if (candleKey != other.candleKey) return false
+                if (dayCandleKey != other.dayCandleKey) return false
 
                 return true
         }
 
         override fun hashCode(): Int {
-                return candleKey.hashCode()
+                return dayCandleKey.hashCode()
         }
 
 
