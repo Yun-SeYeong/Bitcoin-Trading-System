@@ -186,14 +186,16 @@ internal class SyncServiceImplTest {
 
         //when
         val findByMarket = dayCandleAnalysisRepository.findByMarket(market)
-        val tradeList = dayCandleRepository.findByMarket(market).map { it.tradePrice }
+        var tradeList = dayCandleRepository.findByMarket(market).map { it.tradePrice }
 
-        assertThat(findByMarket[0].ma5).isEqualTo(tradeList.take(5).average())
-        assertThat(findByMarket[0].ma10).isEqualTo(tradeList.take(10).average())
-        assertThat(findByMarket[0].ma15).isEqualTo(tradeList.take(15).average())
-        assertThat(findByMarket[0].ma20).isEqualTo(tradeList.take(20).average())
-        assertThat(findByMarket[0].ma60).isEqualTo(tradeList.take(60).average())
-        assertThat(findByMarket[0].ma120).isEqualTo(tradeList.take(120).average())
+        tradeList = tradeList.drop(1)
+
+        assertThat(findByMarket[1].ma5).isEqualTo(tradeList.take(5).average())
+        assertThat(findByMarket[1].ma10).isEqualTo(tradeList.take(10).average())
+        assertThat(findByMarket[1].ma15).isEqualTo(tradeList.take(15).average())
+        assertThat(findByMarket[1].ma20).isEqualTo(tradeList.take(20).average())
+        assertThat(findByMarket[1].ma60).isEqualTo(tradeList.take(60).average())
+        assertThat(findByMarket[1].ma120).isEqualTo(tradeList.take(120).average())
     }
 
     @Test

@@ -202,8 +202,9 @@ class SyncServiceImpl(
 
             val dayCandleMacdList = ArrayList<DayCandleMacd>()
 
+            var tradePriceList = findByMarket.map { it.tradePrice }
+
             for (i in 0 until (findByMarket.size - 4)) {
-                val tradePriceList = findByMarket.map { it.tradePrice }
                 dayCandleMacdList.add(
                         DayCandleMacd(DayCandleKey(
                                 findByMarket[i].dayCandleKey.market,
@@ -216,7 +217,7 @@ class SyncServiceImpl(
                                 getMacd(tradePriceList, i, 120)
                         )
                 )
-                findByMarket.drop(0)
+                tradePriceList = tradePriceList.drop(1)
             }
             dayCandleAnalysisRepository.saveAll(dayCandleMacdList)
             resultSize = dayCandleMacdList.size
@@ -236,8 +237,9 @@ class SyncServiceImpl(
 
             val minuteCandleMacdList = ArrayList<MinuteCandleMacd>()
 
+            var tradePriceList = findByMarket.map { it.tradePrice }
+
             for (i in 0 until (findByMarket.size - 4)) {
-                val tradePriceList = findByMarket.map { it.tradePrice }
                 minuteCandleMacdList.add(
                         MinuteCandleMacd(MinuteCandleKey(
                                 findByMarket[i].minuteCandleKey.market,
@@ -251,7 +253,7 @@ class SyncServiceImpl(
                                 getMacd(tradePriceList, i, 120)
                         )
                 )
-                findByMarket.drop(0)
+                tradePriceList = tradePriceList.drop(1)
             }
             minuteCandleAnalysisRepository.saveAll(minuteCandleMacdList)
             resultSize = minuteCandleMacdList.size
