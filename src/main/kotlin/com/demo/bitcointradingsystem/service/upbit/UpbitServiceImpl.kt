@@ -8,6 +8,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Service
@@ -37,37 +38,68 @@ class UpbitServiceImpl(
     }
 
     override fun getCandlesMinutes(unit: Int, market: String, count: Int, to: String): List<MinuteCandle>? {
-        return webClient.get().run {
-            uri {
-                it.run {
-                    path("/candles/minutes/$unit")
-                    queryParam("market", market)
-                    queryParam("count", count)
-                    if (to.isNotEmpty()) queryParam("to", to)
-                    build()
+        var c = count
+        var t = to
+
+        val result = ArrayList<MinuteCandle>()
+
+        while (c > 0) {
+            val queryCount = if (c >= 200) 200 else c
+            webClient.get().run {
+                uri {
+                    it.run {
+                        path("/candles/minutes/$unit")
+                        queryParam("market", market)
+                        queryParam("count", queryCount)
+                        if (t.isNotEmpty()) queryParam("to", t)
+                        build()
+                    }
                 }
+                accept(MediaType.APPLICATION_JSON)
+                header("Accept", "application/json")
+                retrieve()
+            }.bodyToMono(Array<MinuteCandle>::class.java).block()?.map {
+                result.add(it)
             }
-            accept(MediaType.APPLICATION_JSON)
-            header("Accept", "application/json")
-            retrieve()
-        }.bodyToMono(Array<MinuteCandle>::class.java).block()?.toList()
+
+            c -= queryCount
+            t = result.last().candleDateTimeUtc
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
+        }
+
+        return result
     }
 
     override fun getCandlesDays(market: String, count: Int, to: String): List<DayCandle>? {
-        return webClient.get().run {
-            uri {
-                it.run {
-                    path("/candles/days")
-                    queryParam("market", market)
-                    queryParam("count", count)
-                    if (to.isNotEmpty()) queryParam("to", to)
-                    build()
+        var c = count
+        var t = to
+
+        val result = ArrayList<DayCandle>()
+
+        while (c > 0) {
+            val queryCount = if (c >= 200) 200 else c
+            webClient.get().run {
+                uri {
+                    it.run {
+                        path("/candles/days")
+                        queryParam("market", market)
+                        queryParam("count", queryCount)
+                        if (t.isNotEmpty()) queryParam("to", t)
+                        build()
+                    }
                 }
+                accept(MediaType.APPLICATION_JSON)
+                header("Accept", "application/json")
+                retrieve()
+            }.bodyToMono(Array<DayCandle>::class.java).block()?.map {
+                result.add(it)
             }
-            accept(MediaType.APPLICATION_JSON)
-            header("Accept", "application/json")
-            retrieve()
-        }.bodyToMono(Array<DayCandle>::class.java).block()?.toList()
+
+            c -= queryCount
+            t = result.last().candleDateTimeUtc.toString()
+        }
+
+        return result
     }
 
     override fun getAccounts(authorization: String): List<Balance>? {
