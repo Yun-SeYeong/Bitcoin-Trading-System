@@ -208,7 +208,7 @@ class SyncServiceImpl(
                 dayCandleMacdList.add(
                         DayCandleMacd(DayCandleKey(
                                 findByMarket[i].dayCandleKey.market,
-                                findByMarket[i].dayCandleKey.timestamp),
+                                Timestamp.valueOf(findByMarket[i].candleDateTimeKst).time),
                                 getMacd(tradePriceList, i, 5),
                                 getMacd(tradePriceList, i, 10),
                                 getMacd(tradePriceList, i, 15),
