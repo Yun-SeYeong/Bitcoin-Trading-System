@@ -5,7 +5,8 @@ import javax.persistence.*
 @Entity
 class Scenario(
         name: String,
-        description: String
+        description: String,
+        maxCount: Int
 ) {
     @Id
     @GeneratedValue
@@ -19,13 +20,16 @@ class Scenario(
     var description: String = description
         protected set
 
+    var maxCount: Int = maxCount
+        protected set
+
     @OneToMany(mappedBy = "scenario", cascade = [CascadeType.ALL])
     var rules: MutableList<Rule> = mutableListOf()
         protected set
 
     companion object {
-        fun createScenario(name: String, description: String, rules: Array<Rule>) : Scenario {
-            val scenario = Scenario(name, description)
+        fun createScenario(name: String, description: String, maxCount: Int, rules: Array<Rule>) : Scenario {
+            val scenario = Scenario(name, description, maxCount)
             scenario.rules.addAll(rules)
             return scenario
         }
@@ -47,7 +51,7 @@ class Scenario(
     }
 
     override fun toString(): String {
-        return "Scenario(id=$id, name='$name', description='$description')"
+        return "Scenario(name='$name', description='$description', maxCount=$maxCount)"
     }
 
 }
