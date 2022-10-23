@@ -137,11 +137,12 @@ class DatabaseTest {
         // given
         val name = "DeadCrossBuy"
         val description = "ma5가 ma120 하향 돌파시 매수"
+        val maxCount = 5
 
         val rules = arrayOf(Rule(TradingType.BUY, ValueType.MA5, ValueType.MA120, 1.0, 1.0, Operator.LT))
 
         // when
-        val save = scenarioRepository.save(Scenario.createScenario(name, description, rules))
+        val save = scenarioRepository.save(Scenario.createScenario(name, description, maxCount, rules))
 
         // then
         val findScenario = scenarioRepository.findById(save.id!!)
