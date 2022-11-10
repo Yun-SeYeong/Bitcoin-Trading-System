@@ -1,16 +1,17 @@
-package com.demo.bitcointradingsystem.entity
+package com.demo.bitcointradingsystem.entity.analysis
 
+import com.demo.bitcointradingsystem.entity.candle.DayCandleKey
 import javax.persistence.Entity
 
 @Entity
 class DayCandleMacd(
-        dayCandleKey: DayCandleKey,
-        ma5: Double?,
-        ma10: Double?,
-        ma15: Double?,
-        ma20: Double?,
-        ma60: Double?,
-        ma120: Double?,
+    dayCandleKey: DayCandleKey,
+    ma5: Double?,
+    ma10: Double?,
+    ma15: Double?,
+    ma20: Double?,
+    ma60: Double?,
+    ma120: Double?,
 ) : DayCandleAnalysis(dayCandleKey) {
     var ma5: Double? = ma5
         protected set

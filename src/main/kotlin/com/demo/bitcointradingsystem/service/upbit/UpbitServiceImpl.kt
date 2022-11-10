@@ -2,6 +2,9 @@ package com.demo.bitcointradingsystem.service.upbit
 
 import com.demo.bitcointradingsystem.dto.*
 import com.demo.bitcointradingsystem.entity.*
+import com.demo.bitcointradingsystem.entity.candle.DayCandle
+import com.demo.bitcointradingsystem.entity.candle.MarketCode
+import com.demo.bitcointradingsystem.entity.candle.MinuteCandle
 import com.demo.bitcointradingsystem.util.UpbitUtil
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType

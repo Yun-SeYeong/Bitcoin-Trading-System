@@ -1,8 +1,8 @@
 package com.demo.bitcointradingsystem.service.candle
 
 import com.demo.bitcointradingsystem.dto.responseDto.*
-import com.demo.bitcointradingsystem.entity.DayCandleMacd
-import com.demo.bitcointradingsystem.entity.MinuteCandleMacd
+import com.demo.bitcointradingsystem.entity.analysis.DayCandleMacd
+import com.demo.bitcointradingsystem.entity.analysis.MinuteCandleMacd
 import com.demo.bitcointradingsystem.repository.MarketCodeRepository
 import org.springframework.stereotype.Service
 import java.time.Instant

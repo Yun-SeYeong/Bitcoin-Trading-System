@@ -1,5 +1,6 @@
-package com.demo.bitcointradingsystem.entity
+package com.demo.bitcointradingsystem.entity.analysis
 
+import com.demo.bitcointradingsystem.entity.candle.MinuteCandleKey
 import javax.persistence.EmbeddedId
 import javax.persistence.Entity
 import javax.persistence.Inheritance

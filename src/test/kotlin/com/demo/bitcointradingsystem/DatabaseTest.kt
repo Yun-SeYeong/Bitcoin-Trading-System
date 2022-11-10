@@ -1,6 +1,8 @@
 package com.demo.bitcointradingsystem
 
 import com.demo.bitcointradingsystem.entity.*
+import com.demo.bitcointradingsystem.entity.analysis.DayCandleMacd
+import com.demo.bitcointradingsystem.entity.candle.*
 import com.demo.bitcointradingsystem.repository.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName

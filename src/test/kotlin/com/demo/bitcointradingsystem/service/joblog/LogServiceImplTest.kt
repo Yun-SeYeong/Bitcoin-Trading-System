@@ -1,6 +1,6 @@
 package com.demo.bitcointradingsystem.service.joblog
 
-import com.demo.bitcointradingsystem.entity.JobStatus
+import com.demo.bitcointradingsystem.entity.system.JobStatus
 import com.demo.bitcointradingsystem.repository.LogRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

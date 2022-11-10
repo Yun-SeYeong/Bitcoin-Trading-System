@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.entity
+package com.demo.bitcointradingsystem.entity.candle
 
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate

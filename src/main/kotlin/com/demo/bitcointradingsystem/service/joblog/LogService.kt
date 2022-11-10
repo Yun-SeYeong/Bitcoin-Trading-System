@@ -1,6 +1,6 @@
 package com.demo.bitcointradingsystem.service.joblog
 
-import com.demo.bitcointradingsystem.entity.Log
+import com.demo.bitcointradingsystem.entity.system.Log
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

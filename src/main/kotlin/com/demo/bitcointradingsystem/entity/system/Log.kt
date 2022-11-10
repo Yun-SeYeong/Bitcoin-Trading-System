@@ -1,15 +1,15 @@
-package com.demo.bitcointradingsystem.entity
+package com.demo.bitcointradingsystem.entity.system
 
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
 class Log(
-        jobId: String,
-        startDateTime: LocalDateTime,
-        endDateTime: LocalDateTime?,
-        status: JobStatus,
-        msg: String
+    jobId: String,
+    startDateTime: LocalDateTime,
+    endDateTime: LocalDateTime?,
+    status: JobStatus,
+    msg: String
 ){
     @Id
     @GeneratedValue

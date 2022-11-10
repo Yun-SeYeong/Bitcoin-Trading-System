@@ -1,7 +1,7 @@
 package com.demo.bitcointradingsystem.service.joblog
 
-import com.demo.bitcointradingsystem.entity.JobStatus
-import com.demo.bitcointradingsystem.entity.Log
+import com.demo.bitcointradingsystem.entity.system.JobStatus
+import com.demo.bitcointradingsystem.entity.system.Log
 import com.demo.bitcointradingsystem.repository.LogRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

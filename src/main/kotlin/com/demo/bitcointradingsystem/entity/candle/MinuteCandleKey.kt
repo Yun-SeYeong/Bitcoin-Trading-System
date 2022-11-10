@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.entity
+package com.demo.bitcointradingsystem.entity.candle
 
 import java.io.Serializable
 import javax.persistence.Embeddable

@@ -1,8 +1,8 @@
 package com.demo.bitcointradingsystem.repository
 
-import com.demo.bitcointradingsystem.entity.DayCandleAnalysis
-import com.demo.bitcointradingsystem.entity.DayCandleKey
-import com.demo.bitcointradingsystem.entity.DayCandleMacd
+import com.demo.bitcointradingsystem.entity.analysis.DayCandleAnalysis
+import com.demo.bitcointradingsystem.entity.analysis.DayCandleMacd
+import com.demo.bitcointradingsystem.entity.candle.DayCandleKey
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

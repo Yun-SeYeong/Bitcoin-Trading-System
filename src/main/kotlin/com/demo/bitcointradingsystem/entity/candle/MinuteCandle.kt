@@ -1,4 +1,4 @@
-package com.demo.bitcointradingsystem.entity
+package com.demo.bitcointradingsystem.entity.candle
 
 import java.time.LocalDateTime
 import javax.persistence.EmbeddedId

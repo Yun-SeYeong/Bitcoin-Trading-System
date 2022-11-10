@@ -1,8 +1,8 @@
 package com.demo.bitcointradingsystem.service.sync
 
-import com.demo.bitcointradingsystem.entity.DayCandle
-import com.demo.bitcointradingsystem.entity.MarketCode
-import com.demo.bitcointradingsystem.entity.MinuteCandle
+import com.demo.bitcointradingsystem.entity.candle.DayCandle
+import com.demo.bitcointradingsystem.entity.candle.MarketCode
+import com.demo.bitcointradingsystem.entity.candle.MinuteCandle
 
 interface SyncService {
     fun syncMinuteCandle(unit: Int, market: String, count: Int) : List<MinuteCandle>

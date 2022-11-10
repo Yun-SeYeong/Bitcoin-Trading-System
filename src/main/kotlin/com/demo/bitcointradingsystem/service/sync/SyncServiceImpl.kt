@@ -1,6 +1,8 @@
 package com.demo.bitcointradingsystem.service.sync
 
-import com.demo.bitcointradingsystem.entity.*
+import com.demo.bitcointradingsystem.entity.analysis.DayCandleMacd
+import com.demo.bitcointradingsystem.entity.analysis.MinuteCandleMacd
+import com.demo.bitcointradingsystem.entity.candle.*
 import com.demo.bitcointradingsystem.repository.*
 import com.demo.bitcointradingsystem.service.joblog.LogService
 import com.demo.bitcointradingsystem.service.upbit.UpbitService
