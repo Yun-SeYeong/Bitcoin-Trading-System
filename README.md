@@ -37,12 +37,3 @@ Sync된 정보를 바탕으로 보조 지표를 만든다.
 - https://github.com/Yun-SeYeong/Bitcoin-Trading-System/issues/15
 - https://github.com/Yun-SeYeong/Bitcoin-Trading-System/issues/14
 
-### 매매 시나리오
-
-보조지표를 바탕으로 매수, 매도 신호를 감지할 시나리오를 만든다.
-
-- https://github.com/Yun-SeYeong/Bitcoin-Trading-System/issues/27
-
-### 매매 전략
-
-매매 시나리오를 바탕으로 매입할 비중을 조절한다.
