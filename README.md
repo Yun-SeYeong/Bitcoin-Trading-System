@@ -8,7 +8,7 @@ Upbit의 Open API를 이용하여 Candle정보를 수집하여 Database저장하
 
 ### 수집 과정
 
-<img title="" src="file:///Users/yunseyeong/Documents/workspace/intellij/Bitcoin-Trading-System/docs/images/image1.png" alt="" style="cursor:pointer;max-width:100%;">
+<img title="" src="./docs/images/image1.png" alt="" style="cursor:pointer;max-width:100%;">
 
 1. Upbit Service를 통해 Upbit의 데이터를 수집하여 Sync Service에서 DB에 저장한다.
 
