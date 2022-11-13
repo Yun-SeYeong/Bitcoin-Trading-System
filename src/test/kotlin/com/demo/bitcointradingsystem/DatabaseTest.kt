@@ -1,9 +1,11 @@
 package com.demo.bitcointradingsystem
 
-import com.demo.bitcointradingsystem.entity.*
 import com.demo.bitcointradingsystem.entity.analysis.DayCandleMacd
 import com.demo.bitcointradingsystem.entity.candle.*
-import com.demo.bitcointradingsystem.repository.*
+import com.demo.bitcointradingsystem.repository.DayCandleAnalysisRepository
+import com.demo.bitcointradingsystem.repository.DayCandleRepository
+import com.demo.bitcointradingsystem.repository.MarketCodeRepository
+import com.demo.bitcointradingsystem.repository.MinuteCandleRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -29,8 +31,6 @@ class DatabaseTest {
     @Autowired
     private lateinit var dayCandleAnalysisRepository: DayCandleAnalysisRepository
 
-    @Autowired
-    private lateinit var scenarioRepository: ScenarioRepository
 
     @Test
     @DisplayName("MinuteCandle 저장")
@@ -133,24 +133,6 @@ class DatabaseTest {
         assertThat(savedMarketCode.hashCode()).isEqualTo(findMarketCode.hashCode())
     }
 
-    @Test
-    @DisplayName("Scenario 생성")
-    fun saveScenario() {
-        // given
-        val name = "DeadCrossBuy"
-        val description = "ma5가 ma120 하향 돌파시 매수"
-        val maxCount = 5
 
-        val rules = arrayOf(Rule(TradingType.BUY, ValueType.MA5, ValueType.MA120, 1.0, 1.0, Operator.LT))
-
-        // when
-        val save = scenarioRepository.save(Scenario.createScenario(name, description, maxCount, rules))
-
-        // then
-        val findScenario = scenarioRepository.findById(save.id!!)
-        println("findScenario = ${findScenario}")
-        println("findScenario.get().rules = ${findScenario.get().rules}")
-
-    }
 
 }
