@@ -82,7 +82,7 @@ class VolatilityBreakoutStrategy(
             println("candleNow = $candleNow")
 
             if (candleNow.lowPrice < weight && candleNow.highPrice > weight) {
-                tradingHistoryList.add(TradingHistory(market, now, TradingType.BUY, weight, 1))
+                tradingHistoryList.add(TradingHistory(market, now, TradingType.BUY, weight, 1.0))
             }
 
             start = start.plusDays(1)

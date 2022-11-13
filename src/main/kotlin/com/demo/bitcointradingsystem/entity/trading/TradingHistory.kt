@@ -7,7 +7,7 @@ class TradingHistory(
     tradeDateTime: LocalDateTime,
     tradingType: TradingType,
     price: Double,
-    count: Long
+    count: Double
 ) {
 
     var market: String = market
@@ -22,7 +22,7 @@ class TradingHistory(
     var price: Double = price
         private set
 
-    var count: Long = count
+    var count: Double = count
 
     override fun toString(): String {
         return "TradingHistory(market='$market', tradingDateTime=$tradingDateTime, tradingType=$tradingType, price=$price, count=$count)"

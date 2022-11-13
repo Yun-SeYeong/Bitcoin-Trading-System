@@ -49,7 +49,7 @@ class VolatilityBreakoutStrategyTest {
         // given
         val market = TEST_MARKET
         val requestDto = VolatilityBreakoutSellRequestDto()
-        val tradingHistory = TradingHistory(market, LocalDateTime.now(), TradingType.BUY, 1.0, 1)
+        val tradingHistory = TradingHistory(market, LocalDateTime.now(), TradingType.BUY, 1.0, 1.0)
 
         //when
         val sellStrategy = volatilityBreakoutStrategy.sellStrategy(market, tradingHistory, requestDto)
