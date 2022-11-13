@@ -42,25 +42,25 @@ class CollectScheduler(
         logService.successLog(createLog.id!!, "[SCHEDULER] day candle sync success")
     }
 
-    @Scheduled(cron = "0 0/3 * * * *")
-    fun collect3MinuteCandle() {
-        val createLog = logService.createLog("[SCHEDULER] start 3minute candle sync")
-        try {
-            println("[SYNC] 3분봉 수집 시작")
-            val marketCodeList = marketCodeRepository.findAll()
-
-            marketCodeList.forEach {
-                println("[" + it.market + "] sync...")
-                syncService.batchMinuteCandleWithDate(3, it.market, 2, "")
-                Thread.sleep(200);
-                println("[" + it.market + "] sync complete!")
-            }
-
-            println("[SYNC] 3분봉 수집 완료")
-        } catch (e: Exception) {
-            logService.failLog(createLog.id!!, "[SCHEDULER] 3minute candle sync fail")
-            throw e
-        }
-        logService.successLog(createLog.id!!, "[SCHEDULER] 3minute candle sync success")
-    }
+//    @Scheduled(cron = "0 0/3 * * * *")
+//    fun collect3MinuteCandle() {
+//        val createLog = logService.createLog("[SCHEDULER] start 3minute candle sync")
+//        try {
+//            println("[SYNC] 3분봉 수집 시작")
+//            val marketCodeList = marketCodeRepository.findAll()
+//
+//            marketCodeList.forEach {
+//                println("[" + it.market + "] sync...")
+//                syncService.batchMinuteCandleWithDate(3, it.market, 2, "")
+//                Thread.sleep(200);
+//                println("[" + it.market + "] sync complete!")
+//            }
+//
+//            println("[SYNC] 3분봉 수집 완료")
+//        } catch (e: Exception) {
+//            logService.failLog(createLog.id!!, "[SCHEDULER] 3minute candle sync fail")
+//            throw e
+//        }
+//        logService.successLog(createLog.id!!, "[SCHEDULER] 3minute candle sync success")
+//    }
 }
