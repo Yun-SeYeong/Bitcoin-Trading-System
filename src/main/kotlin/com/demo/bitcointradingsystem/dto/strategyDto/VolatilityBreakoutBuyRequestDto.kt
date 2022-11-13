@@ -1,5 +1,5 @@
 package com.demo.bitcointradingsystem.dto.strategyDto
 
-data class VolatilityBreakoutBuyRequestDto(
+class VolatilityBreakoutBuyRequestDto(
     val k: Double
 )
