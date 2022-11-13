@@ -47,6 +47,9 @@ dependencies {
     //Auth0
     implementation("com.auth0:java-jwt:3.18.3")
 
+    //Swagger
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.12")
+
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("mysql:mysql-connector-java")
     annotationProcessor("org.projectlombok:lombok")
