@@ -12,7 +12,7 @@ class InitConfig(
     @PostConstruct
     fun init() {
         syncService.syncMarketCode(false)
-        syncService.syncMinuteCandle(3, "KRW-BTC", 100)
-        syncService.syncDayCandle("KRW-BTC", 100)
+        syncService.syncMinuteCandle(3, "KRW-BTC", 200)
+        syncService.batchDayCandleWithDate("KRW-BTC", 200, "")
     }
 }
