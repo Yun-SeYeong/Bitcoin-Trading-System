@@ -25,6 +25,8 @@ class Log(
     @Enumerated(EnumType.STRING)
     var status: JobStatus = status
         protected set
+
+    @Column(columnDefinition = "TEXT")
     var msg: String = msg
         protected set
 
