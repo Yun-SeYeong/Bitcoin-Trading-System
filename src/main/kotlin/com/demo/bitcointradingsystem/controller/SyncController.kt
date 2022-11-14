@@ -14,12 +14,12 @@ class SyncController(
         private val logService: LogService
 ) {
 
-    @PostMapping("/market-code/v1")
+    @PostMapping("/market-code-v1")
     fun syncMarketCodeV1(): ResponseDto<PostSyncMarketCodeV1Dto>{
         return ResponseDto(PostSyncMarketCodeV1Dto(syncService.syncMarketCode(true).size))
     }
 
-    @PostMapping("minute-candle/v1/{unit}")
+    @PostMapping("/minute-candle-v1/{unit}")
     fun syncMinuteCandleV1(
             @PathVariable unit: Int,
             @RequestParam market: String,
@@ -29,7 +29,7 @@ class SyncController(
         return ResponseDto(PostSyncMinuteCandleV1Dto(syncService.batchMinuteCandleWithDate(unit, market, count, to)))
     }
 
-    @PostMapping("day-candle/v1")
+    @PostMapping("/day-candle-v1")
     fun syncDayCandleV1(
             @RequestParam market: String,
             @RequestParam to: String,
@@ -38,7 +38,7 @@ class SyncController(
         return ResponseDto(PostSyncDayCandleV1Dto(syncService.batchDayCandleWithDate(market, count, to)))
     }
 
-    @GetMapping("log/v1")
+    @GetMapping("/log-v1")
     fun getSyncLogV1(
             @PageableDefault(sort = ["startDateTime,desc"]) pageable: Pageable
     ) : ResponseDto<List<GetSyncLogV1Dto>>{

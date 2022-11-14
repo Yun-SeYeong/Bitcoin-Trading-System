@@ -10,7 +10,7 @@ class CandleController(
         private val candleService: CandleService
 ) {
 
-    @GetMapping("minute-candle/v1/{unit}")
+    @GetMapping("minute-candle-v1/{unit}")
     fun getMinuteCandleV1(
             @PathVariable unit: Int,
             @RequestParam market: String,
@@ -19,7 +19,7 @@ class CandleController(
         return ResponseDto(candleService.getMinuteCandle(market, unit, count))
     }
 
-    @GetMapping("day-candle/v1")
+    @GetMapping("day-candle-v1")
     fun getMinuteCandleV1(
             @RequestParam market: String,
             @RequestParam count: Int
@@ -27,17 +27,17 @@ class CandleController(
         return ResponseDto(candleService.getDayCandle(market, count))
     }
 
-    @GetMapping("market-code/v1")
+    @GetMapping("market-code-v1")
     fun getMarketCodeV1(): ResponseDto<List<GetMarketCodeV1Dto>> {
         return ResponseDto(candleService.getMarketCodeV1())
     }
 
-    @GetMapping("market-code/v2")
+    @GetMapping("market-code-v2")
     fun getMarketCodeV2(): ResponseDto<List<GetMarketCodeV2Dto>> {
         return ResponseDto(candleService.getMarketCodeV2())
     }
 
-    @GetMapping("day-candle/ma/v1")
+    @GetMapping("day-candle/ma-v1")
     fun getDayCandleMaV1(
             @RequestParam market: String,
             @RequestParam count: Int
@@ -47,7 +47,7 @@ class CandleController(
         )
     }
 
-    @GetMapping("minute-candle/ma/v1/{unit}")
+    @GetMapping("minute-candle/ma-v1/{unit}")
     fun getMinuteCandleMaV1(
             @PathVariable unit: Int,
             @RequestParam market: String,
