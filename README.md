@@ -33,9 +33,7 @@ Upbit의 Open API를 이용하여 Candle정보를 수집하여 Database저장하
 변동성 돌파 전략은 거래일의 현재가가 (시가 + 전일 변동폭 * K)를 돌파할 때 매수하고 금일 종가 또는 명일 시가에 매도하는 전략이다.
 
 
-
-![](/Users/yunseyeong/Documents/workspace/intellij/Bitcoin-Trading-System/docs/images/image2.png)
-
+<img title="" src="./docs/images/image2.png" alt="" style="cursor:pointer;max-width:100%;">
 
 
 **매수 조건**
