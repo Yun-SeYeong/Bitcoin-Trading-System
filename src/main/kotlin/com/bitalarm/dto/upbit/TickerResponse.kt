@@ -1,0 +1,30 @@
+package com.bitalarm.dto.upbit
+
+data class TickerResponse (
+    val market: String,
+    val tradeDate: String,
+    val tradeTime: String,
+    val tradeDateKst: String,
+    val tradeTimeKst: String,
+    val tradeTimestamp: Long,
+    val openingPrice: Double,
+    val highPrice: Double,
+    val lowPrice: Double,
+    val tradePrice: Double,
+    val prevClosingPrice: Double,
+    val change: String,
+    val changePrice: Double,
+    val changeRate: Double,
+    val signedChangePrice: Double,
+    val signedChangeRate: Double,
+    val tradeVolume: Double,
+    val accTradePrice: Double,
+    val accTradePrice_24h: Double,
+    val accTradeVolume: Double,
+    val accTradeVolume_24h: Double,
+    val highest_52WeekPrice: Double,
+    val highest_52WeekDate: String,
+    val lowest_52WeekPrice: Double,
+    val lowest_52WeekDate: String,
+    val timestamp: Long
+)
